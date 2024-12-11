@@ -36,7 +36,8 @@ app.use("/api/magazine", magazineRoutes);
 app.use(errorHandler);
 
 logger.info("Connecting to the database...");
-sequelize.authenticate()
+sequelize
+  .authenticate()
   .then(() => {
     logger.info("Database connected");
     // Sync all models

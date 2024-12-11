@@ -1,5 +1,8 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { Model, ModelStatic } from "sequelize";
+import Log from "../config/log.config";
+
+const logger = new Log().getLogger();
 
 export class ModelController {
   protected model: ModelStatic<Model>;
@@ -8,38 +11,42 @@ export class ModelController {
     this.model = model;
   }
 
-  async getAll(req: Request, res: Response) {
+  async getAll(req: Request, res: Response, next: NextFunction) {
+	logger.info("ModelController.getAll");
     try {
       const items = await this.model.findAll();
       res.json(items);
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 
-  async getOne(req: Request, res: Response) {
+  async getOne(req: Request, res: Response, next: NextFunction) {
+	logger.info("ModelController.getOne");
     try {
       const item = await this.model.findByPk(req.params.id);
       if (item) {
         res.json(item);
       } else {
-        res.status(404).json({ message: "Item not found" });
+        throw { status: 404, message: "Item not found" };
       }
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 
-  async create(req: Request, res: Response) {
+  async create(req: Request, res: Response, next: NextFunction) {
+	logger.info("ModelController.create");
     try {
       const item = await this.model.create(req.body);
       res.status(201).json(item);
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 
-  async update(req: Request, res: Response) {
+  async update(req: Request, res: Response, next: NextFunction) {
+	logger.info("ModelController.update");
     try {
       const [updatedRows] = await this.model.update(req.body, {
         where: { id: req.params.id },
@@ -51,11 +58,12 @@ export class ModelController {
         res.status(404).json({ message: "Item not found" });
       }
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 
-  async delete(req: Request, res: Response) {
+  async delete(req: Request, res: Response, next: NextFunction) {
+	logger.info("ModelController.delete");
     try {
       const deletedRows = await this.model.destroy({
         where: { id: req.params.id },
@@ -66,17 +74,18 @@ export class ModelController {
         res.status(404).json({ message: "Item not found" });
       }
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 
-  async findBy(req: Request, res: Response) {
+  async findBy(req: Request, res: Response, next: NextFunction) {
+	logger.info("ModelController.findBy");
     try {
       const whereClause = req.body;
       const items = await this.model.findAll({ where: whereClause });
       res.json(items);
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 }
