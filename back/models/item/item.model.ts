@@ -1,6 +1,8 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../../database";
 import { generateTrackingNumber } from "../../helpers/tracking.helper";
+import { Status } from "./status.enum";
+import { Condition } from "./condition.enum";
 
 export class Item extends Model {}
 
@@ -13,12 +15,16 @@ export const itemAttributes = {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  link: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
   dateAcquired: {
     type: DataTypes.DATE,
     allowNull: false,
     defaultValue: DataTypes.NOW,
   },
-  price: {
+  priceBought: {
     type: DataTypes.FLOAT,
     allowNull: false,
     defaultValue: 0,
@@ -27,11 +33,13 @@ export const itemAttributes = {
     type: DataTypes.STRING,
     allowNull: false,
     defaultValue: "New",
+	values: Object.values(Condition),
   },
   status: {
     type: DataTypes.STRING,
     allowNull: false,
     defaultValue: "In Use",
+    values: Object.values(Status),
   },
   notes: {
     type: DataTypes.STRING,
@@ -45,9 +53,9 @@ export const itemAttributes = {
     type: DataTypes.STRING,
     allowNull: false,
     unique: true,
-	defaultValue: function() {
-		return generateTrackingNumber(this.constructor.name);
-	}
+    defaultValue: function () {
+      return generateTrackingNumber(this.constructor.name);
+    },
   },
 };
 

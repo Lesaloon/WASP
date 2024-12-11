@@ -29,11 +29,11 @@ const port = process.env.PORT || 3000;
 logger.info("Adding middleware...");
 app.use(cors());
 app.use(bodyParser.json());
-app.use(errorHandler);
+app.use(responseWrapper);
 app.use("/api/weapon", weaponRoutes);
 app.use("/api/accessory", accessoryRoutes);
 app.use("/api/magazine", magazineRoutes);
-app.use(responseWrapper);
+app.use(errorHandler);
 
 logger.info("Connecting to the database...");
 sequelize.authenticate()

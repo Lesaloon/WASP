@@ -23,8 +23,7 @@ export const weaponAttributes = {
   // when a weapon is registered the authorizations is only valid for 5 years (from the date of registration)
   SIAExpireDate: {
 	type: DataTypes.DATE,
-	allowNull: true,
-	defaultValue: Date.now() + 5*365*24*60*60*1000
+	allowNull: true
   },
   model: {
     type: DataTypes.STRING,
