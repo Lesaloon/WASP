@@ -1,11 +1,15 @@
 import { Item } from "../models/item/item.model";
-import { Op } from "sequelize";
+import { sql } from "@sequelize/core";
+import { Model, ModelStatic, Op } from "sequelize";
 
-export async function getTrackingCounter(prefix: string): Promise<number> {
-  const result = await Item.findAll({
+export async function getTrackingCounter(
+  prefix: string,
+  model: ModelStatic<Model>
+): Promise<number> {
+  const result = await model.findAll({
     where: {
       trackingCode: {
-        [Op.like]: `${prefix}-%`,
+        [Op.like]: prefix + "%",
       },
     },
   });
@@ -18,8 +22,9 @@ export async function getTrackingCounter(prefix: string): Promise<number> {
 }
 
 export async function incrementTrackingCounter(
-  prefix: string
+  prefix: string,
+  model: ModelStatic<Model>
 ): Promise<number> {
-  const currentCounter = await getTrackingCounter(prefix);
+  const currentCounter = await getTrackingCounter(prefix, model);
   return currentCounter + 1;
 }

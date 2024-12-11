@@ -13,7 +13,7 @@ export class ItemController extends ModelController {
 
   async create(req: Request, res: Response, next: NextFunction) {
 	// load the default value for the tracking code
-	req.body.trackingCode = await generateTrackingNumber(req.body.itemType);
+	req.body.trackingCode = await generateTrackingNumber(req.body.itemType, this.model);
 	super.create(req, res, next);
   }
 }
