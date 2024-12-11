@@ -1,16 +1,29 @@
-import { Schema } from "mongoose";
-import { Item } from "../item/item.model";
+import { DataTypes } from "sequelize";
+import { sequelize } from "../../database";
+import { Item, itemAttributes } from "../item/item.model";
+import { Weapon } from "../weapon/weapon.model";
 
-const accessorySchema = new Schema({
+class Accessory extends Item {}
+
+Accessory.init({
+  ...itemAttributes,
   type: {
-    type: String,
-    required: true,
+    type: DataTypes.STRING,
+    allowNull: false,
   },
-  associatedWeapon: {
-    type: Schema.Types.ObjectId,
-    ref: "Weapon",
-    required: false,
+  weaponId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: Weapon,
+      key: 'id',
+    },
   },
+}, {
+  sequelize,
+  modelName: "Accessory",
 });
 
-export const Accessory = Item.discriminator("Accessory", accessorySchema);
+Accessory.belongsTo(Weapon, { foreignKey: 'weaponId' });
+
+export { Accessory };

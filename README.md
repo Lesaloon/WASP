@@ -3,7 +3,7 @@ Weapons and Accessories Support Platform
 
 1. Database Design
 
-The system will use a relational database to manage the inventory effectively.
+The system will use an MS SQL database to manage the inventory effectively.
 Tables and Fields
 
     Item Table (Abstract)
@@ -15,6 +15,8 @@ Tables and Fields
         Condition (New, Used, Refurbished)
         Status (In Use, Retired, Under Maintenance)
         Notes
+        Warranty
+        Tracking Code (Unique)
 
     Weapons Table (Inherits from Item)
         Category (e.g., Rifle, Pistol, Shotgun)

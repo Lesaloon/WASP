@@ -1,52 +1,44 @@
-import { Schema } from "mongoose";
-import { Item } from "../item/item.model";
+import { DataTypes } from "sequelize";
+import { sequelize } from "../../database";
+import { Item, itemAttributes } from "../item/item.model";
 
-enum Category {
-  Pistol = "Pistol",
-  Rifle = "Rifle",
-  Shotgun = "Shotgun",
-  // ...other categories
-}
+class Weapon extends Item {}
 
-enum ActionType {
-  SemiAutomatic = "Semi-Automatic",
-  BoltAction = "Bolt-Action",
-  // ...other action types
-}
-
-const weaponSchema = new Schema({
+Weapon.init({
+  ...itemAttributes, // Include Item attributes
   category: {
-    type: String,
-    enum: Object.values(Category),
-    required: true,
+    type: DataTypes.STRING,
+    allowNull: false,
   },
   subcategory: {
-    type: String,
-    required: false,
+    type: DataTypes.STRING,
+    allowNull: true,
   },
   model: {
-    type: String,
-    required: true,
+    type: DataTypes.STRING,
+    allowNull: false,
   },
   serialNumber: {
-    type: String,
-    required: true,
-    default: "NONE",
+    type: DataTypes.STRING,
+    allowNull: false,
+    defaultValue: "NONE",
   },
   caliberGauge: {
-    type: String,
-    required: true,
+    type: DataTypes.STRING,
+    allowNull: false,
   },
   actionType: {
-    type: String,
-    enum: Object.values(ActionType),
-    required: true,
+    type: DataTypes.STRING,
+    allowNull: false,
   },
   countryOfOrigin: {
-    type: String,
-    required: true,
-    default: "France",
+    type: DataTypes.STRING,
+    allowNull: false,
+    defaultValue: "France",
   },
+}, {
+  sequelize,
+  modelName: "Weapon",
 });
 
-export const Weapon = Item.discriminator("Weapon", weaponSchema);
+export { Weapon };

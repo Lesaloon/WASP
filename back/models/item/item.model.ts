@@ -1,66 +1,53 @@
-import { Schema, model, Document, Model } from "mongoose";
-import { generateTrackingNumber } from "../../helpers/tracking.helper";
+import { DataTypes, Model } from "sequelize";
+import { sequelize } from "../../database";
 
-enum Condition {
-  New = "New",
-  Used = "Used",
-  Refurbished = "Refurbished",
-  // ...other conditions
-}
+export class Item extends Model {}
 
-enum Status {
-  InUse = "In Use",
-  Retired = "Retired",
-  UnderMaintenance = "Under Maintenance",
-  // ...other statuses
-}
-
-const options = { discriminatorKey: 'itemType', collection: 'items' };
-
-const ItemSchema = new Schema({
+export const itemAttributes = {
   name: {
-    type: String,
-    required: true,
+    type: DataTypes.STRING,
+    allowNull: false,
   },
   manufacturer: {
-    type: String,
-    required: true,
+    type: DataTypes.STRING,
+    allowNull: false,
   },
   dateAcquired: {
-    type: Date,
-    required: true,
-    default: Date.now,
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW,
   },
   price: {
-    type: Number,
-    required: true,
-    default: 0,
+    type: DataTypes.FLOAT,
+    allowNull: false,
+    defaultValue: 0,
   },
   condition: {
-    type: String,
-    enum: Object.values(Condition),
-    required: true,
-    default: Condition.New,
+    type: DataTypes.STRING,
+    allowNull: false,
+    defaultValue: "New",
   },
   status: {
-    type: String,
-    enum: Object.values(Status),
-    required: true,
-    default: Status.InUse,
+    type: DataTypes.STRING,
+    allowNull: false,
+    defaultValue: "In Use",
   },
   notes: {
-    type: String,
-    required: false,
+    type: DataTypes.STRING,
+    allowNull: true,
   },
   warranty: {
-    type: String,
-    required: false,
+    type: DataTypes.STRING,
+    allowNull: true,
   },
   trackingCode: {
-    type: String,
-    required: true,
-    unique: true
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
   },
-}, options);
+};
 
-export const Item = model("Item", ItemSchema);
+Item.init(itemAttributes, {
+  sequelize,
+  modelName: "Item",
+});
