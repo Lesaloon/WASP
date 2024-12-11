@@ -6,45 +6,33 @@ Weapons and Accessories Support Platform
 The system will use a relational database to manage the inventory effectively.
 Tables and Fields
 
-    Weapons Table
+    Item Table (Abstract)
         ID (Primary Key)
         Name
-        Category (e.g., Rifle, Pistol, Shotgun)
-        Subcategory (e.g., Bolt-action, Semi-auto, Pump-action)
         Manufacturer
-        Model
-        Serial Number
-        Caliber/Gauge
-        Action Type (e.g., Semi-auto, Bolt-action)
         Date Acquired
         Price
-        Country of Origin
         Condition (New, Used, Refurbished)
         Status (In Use, Retired, Under Maintenance)
         Notes
 
-    Parts Table
-        ID (Primary Key)
-        Name
+    Weapons Table (Inherits from Item)
+        Category (e.g., Rifle, Pistol, Shotgun)
+        Subcategory (e.g., Bolt-action, Semi-auto, Pump-action)
+        Model
+        Serial Number
+        Caliber/Gauge
+        Action Type (e.g., Semi-auto, Bolt-action)
+        Country of Origin
+
+    Parts Table (Inherits from Item)
         Associated Weapon(s) (Foreign Key)
         Type (e.g., Barrel, Trigger Assembly, Bolt Carrier)
         Compatible Models
-        Manufacturer
-        Date Acquired
-        Price
-        Condition
-        Status (In Use, Retired, Replacement Required)
 
-    Accessories Table
-        ID (Primary Key)
-        Name
+    Accessories Table (Inherits from Item)
         Type (e.g., Holster, Optic, Light, Laser)
         Associated Weapon(s) (Foreign Key)
-        Manufacturer
-        Date Acquired
-        Price
-        Condition
-        Status (In Use, Retired, Needs Repair)
 
     Maintenance Table
         ID (Primary Key)
