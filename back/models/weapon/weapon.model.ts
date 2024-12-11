@@ -39,7 +39,7 @@ export const weaponAttributes = {
     allowNull: false,
   },
   barelLength: {
-    type: DataTypes.FLOAT,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   actionType: {

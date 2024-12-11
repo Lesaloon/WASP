@@ -1,10 +1,11 @@
 import { Item } from "../models/item/item.model";
+import { Op } from "sequelize";
 
 export async function getTrackingCounter(prefix: string): Promise<number> {
   const result = await Item.findAll({
     where: {
-		trackingCode: {
-        $like: `${prefix}-%`,
+      trackingCode: {
+        [Op.like]: `${prefix}-%`,
       },
     },
   });

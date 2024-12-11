@@ -32,13 +32,13 @@ export const itemAttributes = {
   condition: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: "New",
+    defaultValue: "new",
 	values: Object.values(Condition),
   },
   status: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: "In Use",
+    defaultValue: "in_use",
     values: Object.values(Status),
   },
   notes: {
@@ -53,9 +53,6 @@ export const itemAttributes = {
     type: DataTypes.STRING,
     allowNull: false,
     unique: true,
-    defaultValue: function () {
-      return generateTrackingNumber(this.constructor.name);
-    },
   },
 };
 
