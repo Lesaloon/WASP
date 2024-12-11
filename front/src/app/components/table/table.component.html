@@ -1,0 +1,29 @@
+<div class="filter">
+  <input
+    type="text"
+    [(ngModel)]="filterText"
+    placeholder="Filter by description"
+  />
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Manufacturer</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (item of filteredData; track $index) {
+    <tr>
+      <td>{{ item.id }}</td>
+      <td>{{ item.name }}</td>
+      <td>{{ item.manufacturer }}</td>
+      <td>{{ item.status }}</td>
+    </tr>
+
+    }
+  </tbody>
+</table>

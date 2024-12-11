@@ -1,28 +1,5 @@
 <div class="container">
   <h1>Page d'Accueil</h1>
 
-  <div class="filter">
-    <input
-      type="text"
-      [(ngModel)]="filterText"
-      placeholder="Filter by description"
-    />
-  </div>
-
-  <table class="table">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (item of filteredData; track $index) {
-      <tr>
-        <td>{{ item.id }}</td>
-        <td>{{ item.description }}</td>
-      </tr>
-      }
-    </tbody>
-  </table>
+  <app-table [data]="weaponList"></app-table>
 </div>
