@@ -2,9 +2,9 @@ import { DataTypes } from "sequelize";
 import { sequelize } from "../../database";
 import { Item, itemAttributes } from "../item/item.model";
 
-class Weapon extends Item {}
+export class Weapon extends Item {}
 
-Weapon.init({
+export const weaponAttributes = {
   ...itemAttributes, // Include Item attributes
   category: {
     type: DataTypes.STRING,
@@ -27,6 +27,10 @@ Weapon.init({
     type: DataTypes.STRING,
     allowNull: false,
   },
+  barelLength: {
+    type: DataTypes.FLOAT,
+    allowNull: false,
+  },
   actionType: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -36,9 +40,9 @@ Weapon.init({
     allowNull: false,
     defaultValue: "France",
   },
-}, {
+};
+
+Weapon.init(weaponAttributes, {
   sequelize,
   modelName: "Weapon",
 });
-
-export { Weapon };

@@ -3,9 +3,9 @@ import { sequelize } from "../../database";
 import { Item, itemAttributes } from "../item/item.model";
 import { Weapon } from "../weapon/weapon.model";
 
-class Part extends Item {}
+export class Part extends Item {}
 
-Part.init({
+export const partAttributes = {
   ...itemAttributes,
   type: {
     type: DataTypes.STRING,
@@ -19,14 +19,14 @@ Part.init({
     allowNull: true,
     references: {
       model: Weapon,
-      key: 'id',
+      key: "id",
     },
   },
-}, {
+};
+
+Part.init(partAttributes, {
   sequelize,
   modelName: "Part",
 });
 
-Part.belongsTo(Weapon, { foreignKey: 'weaponId' });
-
-export { Part };
+Part.belongsTo(Weapon, { foreignKey: "weaponId" });

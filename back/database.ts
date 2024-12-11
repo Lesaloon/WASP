@@ -11,6 +11,7 @@ const dialect = process.env.SQL_DATABASE_DIALECT as Dialect || "mysql";
 const sequelize = new Sequelize(database, username, password, {
   host,
   dialect,
+  logging: console.log, // Enable logging
 });
 
 export { sequelize };
