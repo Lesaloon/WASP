@@ -1,5 +1,6 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../../database";
+import { generateTrackingNumber } from "../../helpers/tracking.helper";
 
 export class Item extends Model {}
 
@@ -44,6 +45,9 @@ export const itemAttributes = {
     type: DataTypes.STRING,
     allowNull: false,
     unique: true,
+	defaultValue: function() {
+		return generateTrackingNumber(this.constructor.name);
+	}
   },
 };
 

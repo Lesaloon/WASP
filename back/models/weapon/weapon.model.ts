@@ -14,6 +14,18 @@ export const weaponAttributes = {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  legalCategory: {
+	type: DataTypes.STRING,
+	allowNull: false,
+	// from an enum
+	values: ["A1", "A2", "B", "C", "D"]
+  },
+  // when a weapon is registered the authorizations is only valid for 5 years (from the date of registration)
+  SIAExpireDate: {
+	type: DataTypes.DATE,
+	allowNull: true,
+	defaultValue: Date.now() + 5*365*24*60*60*1000
+  },
   model: {
     type: DataTypes.STRING,
     allowNull: false,
