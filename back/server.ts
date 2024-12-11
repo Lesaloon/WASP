@@ -8,6 +8,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 logger.info("Importing routes and middleware...");
 import weaponRoutes from "./routes/weapon.routes";
+import accessoryRoutes from "./routes/accessory.routes";
 import errorHandler from "./middleware/errorhandler.middleware";
 import responseWrapper from "./middleware/responseWrapper.middleware";
 dotenv.config();
@@ -21,6 +22,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(errorHandler);
 app.use("/api/weapon", weaponRoutes);
+app.use("/api/accessory", accessoryRoutes);
 app.use(responseWrapper);
 
 logger.info("Connecting to MongoDB...");
