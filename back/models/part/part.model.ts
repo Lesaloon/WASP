@@ -12,7 +12,7 @@ export const partAttributes = {
     allowNull: false,
   },
   compatibleModels: {
-    type: DataTypes.ARRAY(DataTypes.STRING),
+    type: DataTypes.TEXT,
   },
   weaponId: {
     type: DataTypes.INTEGER,
