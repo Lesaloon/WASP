@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -6,9 +6,9 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { DialogService, DialogRef, DialogCloseDirective } from '@ngneat/dialog';
+import { DialogRef } from '@ngneat/dialog';
 import { Item } from '../../interfaces/item.interface';
-import { getSchemaFromType, Schema } from '../../interfaces/schema-generator';
+import { Schema } from '../../interfaces/schema-generator';
 
 interface Data {
   schema: any;
