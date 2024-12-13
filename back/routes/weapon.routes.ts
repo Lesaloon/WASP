@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { WeaponController } from "../controllers/weapon.controller";
+import { checkRole } from "../middleware/rbac.middleware";
 
 const router = Router();
 

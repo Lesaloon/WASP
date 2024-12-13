@@ -17,7 +17,7 @@ interface Data {
 @Component({
   selector: 'app-dynamic-form',
   standalone: true,
-  imports: [DialogCloseDirective, ReactiveFormsModule, FormsModule],
+  imports: [ReactiveFormsModule, FormsModule],
   templateUrl: './dynamic-form.component.html',
   styleUrl: './dynamic-form.component.css',
 })
@@ -41,7 +41,7 @@ export class DynamicFormComponent<T extends Item> implements OnInit {
 
   buildForm() {
     const formGroup: any = {};
-	this.schema = getSchemaFromType<T>();;
+    this.schema = getSchemaFromType<T>();
     this.fields = Object.keys(this.schema.properties).map((key) => {
       const property = this.schema.properties[key] as any;
       const validators = [];
