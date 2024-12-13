@@ -7,7 +7,7 @@ interface CustomError extends Error {
 	message: string;
 }
 
-const errorHandler = (err: CustomError | Error, _req: Request, res: Response, _next: NextFunction) => {
+const errorHandler = (err: Error | CustomError, _req: Request, res: Response, _next: NextFunction) => {
 	if (typeof (err) === 'string') {
 		// custom application error
 		logger.error(err);

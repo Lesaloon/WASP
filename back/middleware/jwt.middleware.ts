@@ -1,7 +1,7 @@
 import { expressjwt } from "express-jwt";
 import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
 import { User } from "../models/user/user.model";
+import dotenv from "dotenv";
 dotenv.config();
 
 // Define a custom getToken function
@@ -40,8 +40,8 @@ export const jwtMiddleware = expressjwt({
 
 export function generateTokenFromUser(user: User): string {
   return jwt.sign(
-    { id: user.get().id, email: user.get().email },
+    { id: user.get().id, email: user.get().email, password: user.get().password },
     (process.env.JWT_SECRET as string) ?? "test",
-    { expiresIn: "1h" }
+    { expiresIn: process.env.JWT_EXPIRES_IN }
   );
 }
