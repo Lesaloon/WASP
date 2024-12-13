@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TableComponent } from '../../components/table/table.component';
-import { Item } from '../../Interface/item.interface';
+import { Item } from '../../Interfaces/item.interface';
 import { ApiService } from '../../services/api.service';
 @Component({
   selector: 'app-accueil',

@@ -1,6 +1,6 @@
 import { Component, inject, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Item } from '../../Interface/item.interface';
+import { Item } from '../../Interfaces/item.interface';
 import { DialogService } from '@ngneat/dialog';
 import { DynamicFormComponent } from '../dynamic-form/dynamic-form.component';
 @Component({
