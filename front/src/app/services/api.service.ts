@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Item } from '../Interface/item.interface';
+import { Item, Weapon } from '../Interfaces/item.interface';
 import { HttpService } from './http.service';
 
 @Injectable({
@@ -9,6 +9,10 @@ export class ApiService {
   constructor(private http: HttpService) {}
 
   getAllWeapons() {
-    return this.http.get<Item>('weapon/');
+    return this.http.get<Weapon>('weapon/');
+  }
+
+  createWeapon(weapon: Weapon) {
+	return this.http.post<Weapon>('weapon/', weapon);
   }
 }

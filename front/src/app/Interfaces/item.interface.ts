@@ -23,3 +23,33 @@ export interface Item {
   warranty?: string; // Corresponds to DataTypes.STRING (optional)
   trackingCode: string; // Corresponds to DataTypes.STRING (unique)
 }
+
+export interface Part extends Item {
+  type: string;
+  compatibleModels?: string;
+  weaponId?: number;
+}
+
+export interface Magazine extends Accessory {
+  type: string;
+  capacity: number;
+  caliberGauge: string;
+}
+
+export interface Accessory extends Item {
+  type: string;
+  weaponId?: number;
+}
+
+export interface Weapon extends Item {
+  category: string;
+  subcategory?: string;
+  legalCategory: 'A1' | 'A2' | 'B' | 'C' | 'D';
+  SIAExpireDate?: Date;
+  model: string;
+  serialNumber: string;
+  caliberGauge: string;
+  barelLength: string;
+  actionType: string;
+  countryOfOrigin: string;
+}
