@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { Item } from '../../Interfaces/item.interface';
 import { DialogService } from '@ngneat/dialog';
 import { DynamicFormComponent } from '../dynamic-form/dynamic-form.component';
+import { getSchemaFromType } from '../../Interfaces/schema-generator';
 @Component({
   selector: 'app-table',
   standalone: true,
@@ -10,7 +11,7 @@ import { DynamicFormComponent } from '../dynamic-form/dynamic-form.component';
   templateUrl: './table.component.html',
   styleUrl: './table.component.css',
 })
-export class TableComponent {
+export class TableComponent<T extends Item> {
   @Input()
   data: Array<Item> = [];
   filterText: string = '';
@@ -23,33 +24,11 @@ export class TableComponent {
     );
   }
   addData() {
+
+
     this.dialog.open(DynamicFormComponent, {
       data: {
-        schema: [
-          {
-            name: 'email',
-            type: 'email',
-            label: 'Email Address',
-            required: true,
-            placeholder: 'Enter your email',
-          },
-          {
-            name: 'password',
-            type: 'password',
-            label: 'Password',
-            required: true,
-            minLength: 6,
-            placeholder: 'Enter your password',
-          },
-          {
-            name: 'bio',
-            type: 'textarea',
-            label: 'Bio',
-            required: false,
-            maxLength: 200,
-            placeholder: 'Write about yourself',
-          },
-        ],
+        schema: getSchemaFromType<T>(),
       },
     });
   }

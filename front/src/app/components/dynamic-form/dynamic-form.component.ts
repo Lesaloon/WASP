@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -7,9 +7,11 @@ import {
   Validators,
 } from '@angular/forms';
 import { DialogService, DialogRef, DialogCloseDirective } from '@ngneat/dialog';
+import { Item } from '../../Interfaces/item.interface';
+import { getSchemaFromType, Schema } from '../../Interfaces/schema-generator';
 
 interface Data {
-	schema: any;
+  schema: any;
 }
 
 @Component({
@@ -19,21 +21,18 @@ interface Data {
   templateUrl: './dynamic-form.component.html',
   styleUrl: './dynamic-form.component.css',
 })
-export class DynamicFormComponent {
-  schema: any = [];
+export class DynamicFormComponent<T extends Item> implements OnInit {
+  defaultValues: any = {};
   form!: FormGroup;
   fields: any[] = [];
-
+  schema!: Schema;
   ref: DialogRef<Data, string> = inject(DialogRef);
 
-  constructor(private fb: FormBuilder) {
-
-  }
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
-	this.schema = this.ref.data.schema;
+    this.defaultValues = this.ref.data;
     this.buildForm();
-	console.log(this.schema);
   }
 
   close() {
@@ -42,30 +41,38 @@ export class DynamicFormComponent {
 
   buildForm() {
     const formGroup: any = {};
+	this.schema = getSchemaFromType<T>();;
+    this.fields = Object.keys(this.schema.properties).map((key) => {
+      const property = this.schema.properties[key] as any;
+      const validators = [];
 
-    this.schema.forEach((field: any) => {
-      const control = [field.default || '', []];
-	  console.log(control);
-      this.fields.push(field);
-      if (field.required) {
-        control[1].push(Validators.required);
+      if (property.required) {
+        validators.push(Validators.required);
       }
 
-      if (field.type === 'email') {
-        control[1].push(Validators.email);
+      if (property.pattern) {
+        validators.push(Validators.pattern(property.pattern));
       }
 
-      if (field.minLength) {
-        control[1].push(Validators.minLength(field.minLength));
+      if (property.minLength) {
+        validators.push(Validators.minLength(property.minLength));
       }
 
-      if (field.maxLength) {
-        control[1].push(Validators.maxLength(field.maxLength));
+      if (property.maxLength) {
+        validators.push(Validators.maxLength(property.maxLength));
       }
 
-      formGroup[field.name] = control;
+      formGroup[key] = [this.defaultValues[key] || '', validators];
+
+      return {
+        name: key,
+        label: property.label || key.charAt(0).toUpperCase() + key.slice(1),
+        type: property.enum ? 'select' : property.type,
+        placeholder: `Enter ${property.label || key}`,
+        options: property.enum || [],
+      };
     });
-	console.log(formGroup);
+
     this.form = this.fb.group(formGroup);
   }
 
