@@ -42,8 +42,8 @@ export class DynamicFormComponent<T extends Item> implements OnInit {
   buildForm() {
     const formGroup: any = {};
     this.schema = this.ref.data.schema;
-    this.fields = Object.keys(this.schema.properties).map((key) => {
-      const property = this.schema.properties[key] as any;
+    this.fields = this.schema.properties.map(({ key, value }) => {
+      const property = value as any;
       const validators = [];
 
       if (property.required) {
@@ -70,6 +70,7 @@ export class DynamicFormComponent<T extends Item> implements OnInit {
         type: property.enum ? 'select' : property.type,
         placeholder: `Enter ${property.label || key}`,
         options: property.enum || [],
+		required: property.required,
       };
     });
 

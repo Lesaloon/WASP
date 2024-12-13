@@ -17,7 +17,12 @@
 				@for(field of fields; track $index) {
 				<div class="field">
 					<!-- Bulma's field wrapper -->
-					<label class="label" [for]="field.name">{{ field.label }}</label>
+					<label class="label" [for]="field.name">
+						{{ field.label }} 
+						@if(field.required) {
+						<span class="has-text-danger">*</span>
+						}
+					</label>
 					<!-- Field label -->
 					<div class="control">
 						<!-- Wrapper for input or textarea -->
