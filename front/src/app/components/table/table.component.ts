@@ -1,9 +1,10 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Item } from '../../Interfaces/item.interface';
+import { Item } from '../../interfaces/item.interface';
 import { DialogService } from '@ngneat/dialog';
 import { DynamicFormComponent } from '../dynamic-form/dynamic-form.component';
-import { getSchemaFromType, Schema } from '../../Interfaces/schema-generator';
+import { getSchema, getSchemaFromType, Schema, SchemaType } from '../../interfaces/schema-generator';
+
 @Component({
   selector: 'app-table',
   standalone: true,
@@ -11,11 +12,14 @@ import { getSchemaFromType, Schema } from '../../Interfaces/schema-generator';
   templateUrl: './table.component.html',
   styleUrl: './table.component.css',
 })
-export class TableComponent<T extends Item> {
+export class TableComponent<T extends Item> implements OnInit {
   @Input()
-  data: Array<T> = [];
+  data: T[] = [];
   filterText: string = '';
-  schema: Schema = getSchemaFromType<T>();
+  @Input()
+  type!: string;
+  schema!: Schema;
+  loading = true;
 
   constructor(private dialog: DialogService) {}
 
@@ -23,6 +27,12 @@ export class TableComponent<T extends Item> {
     return this.data.filter((item: T) =>
       item.name.toLowerCase().includes(this.filterText.toLowerCase())
     );
+  }
+
+  ngOnInit(): void {
+    this.schema = getSchema(this.type as SchemaType);
+    this.loading = false;
+    console.log(this.schema);
   }
 
   addData() {
@@ -33,3 +43,4 @@ export class TableComponent<T extends Item> {
     });
   }
 }
+

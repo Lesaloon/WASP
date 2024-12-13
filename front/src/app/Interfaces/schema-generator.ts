@@ -1,7 +1,7 @@
 import { Type } from '@angular/core';
-import { Item, Part, Magazine, Accessory, Weapon } from './item.interface';
+import { Part, Item, Magazine, Accessory, Weapon } from './item.interface';
 
-type SchemaType = 'Item' | 'Part' | 'Magazine' | 'Accessory' | 'Weapon';
+export type SchemaType = 'Item' | 'Part' | 'Magazine' | 'Accessory' | 'Weapon';
 export interface Schema {
   $schema: string;
   title: string;
@@ -9,11 +9,11 @@ export interface Schema {
   extending?: SchemaType;
   properties: Record<string, any>;
   required: string[];
-  showInTable: string[];
+  showInTable: Array<{ key: string, label: string }>;
 }
 
 const schemas: Record<SchemaType, object> = {
-  Item: {
+  "Item": {
     $schema: 'http://json-schema.org/draft-07/schema#',
     title: 'Item',
     type: 'object',
@@ -31,16 +31,16 @@ const schemas: Record<SchemaType, object> = {
     //   trackingCode: { type: 'string', required: true, label: 'Tracking Code' },
     },
     showInTable: [
-      'name',
-      'manufacturer',
-      'dateAcquired',
-      'priceBought',
-      'condition',
-      'status',
-      'trackingCode',
+      { key: 'name', label: 'Name' },
+      { key: 'manufacturer', label: 'Manufacturer' },
+      { key: 'dateAcquired', label: 'Date Acquired' },
+      { key: 'priceBought', label: 'Price Bought' },
+      { key: 'condition', label: 'Condition' },
+      { key: 'status', label: 'Status' },
+      { key: 'trackingCode', label: 'Tracking Code' },
     ],
   },
-  Part: {
+  "Part": {
     $schema: 'http://json-schema.org/draft-07/schema#',
     title: 'Part',
     type: 'object',
@@ -52,16 +52,16 @@ const schemas: Record<SchemaType, object> = {
     },
     extending: 'Item',
     showInTable: [
-      'name',
-      'manufacturer',
-      'dateAcquired',
-      'priceBought',
-      'condition',
-      'status',
-      'trackingCode',
+      { key: 'name', label: 'Name' },
+      { key: 'manufacturer', label: 'Manufacturer' },
+      { key: 'dateAcquired', label: 'Date Acquired' },
+      { key: 'priceBought', label: 'Price Bought' },
+      { key: 'condition', label: 'Condition' },
+      { key: 'status', label: 'Status' },
+      { key: 'trackingCode', label: 'Tracking Code' },
     ],
   },
-  Magazine: {
+  "Magazine": {
     $schema: 'http://json-schema.org/draft-07/schema#',
     title: 'Magazine',
     type: 'object',
@@ -73,19 +73,19 @@ const schemas: Record<SchemaType, object> = {
     },
     extending: 'Item',
     showInTable: [
-      'name',
-      'manufacturer',
-      'dateAcquired',
-      'priceBought',
-      'condition',
-      'status',
-      'trackingCode',
-      'type',
-      'capacity',
-      'caliberGauge',
+      { key: 'name', label: 'Name' },
+      { key: 'manufacturer', label: 'Manufacturer' },
+      { key: 'dateAcquired', label: 'Date Acquired' },
+      { key: 'priceBought', label: 'Price Bought' },
+      { key: 'condition', label: 'Condition' },
+      { key: 'status', label: 'Status' },
+      { key: 'trackingCode', label: 'Tracking Code' },
+      { key: 'type', label: 'Type' },
+      { key: 'capacity', label: 'Capacity' },
+      { key: 'caliberGauge', label: 'Caliber Gauge' },
     ],
   },
-  Accessory: {
+  "Accessory": {
     $schema: 'http://json-schema.org/draft-07/schema#',
     title: 'Accessory',
     type: 'object',
@@ -96,17 +96,17 @@ const schemas: Record<SchemaType, object> = {
     },
     extending: 'Item',
     showInTable: [
-      'name',
-      'manufacturer',
-      'dateAcquired',
-      'priceBought',
-      'condition',
-      'status',
-      'trackingCode',
-      'type',
+      { key: 'name', label: 'Name' },
+      { key: 'manufacturer', label: 'Manufacturer' },
+      { key: 'dateAcquired', label: 'Date Acquired' },
+      { key: 'priceBought', label: 'Price Bought' },
+      { key: 'condition', label: 'Condition' },
+      { key: 'status', label: 'Status' },
+      { key: 'trackingCode', label: 'Tracking Code' },
+      { key: 'type', label: 'Type' },
     ],
   },
-  Weapon: {
+  "Weapon": {
     $schema: 'http://json-schema.org/draft-07/schema#',
     title: 'Weapon',
     type: 'object',
@@ -125,25 +125,26 @@ const schemas: Record<SchemaType, object> = {
     },
     extending: 'Item',
     showInTable: [
-      'name',
-      'manufacturer',
-      'dateAcquired',
-      'priceBought',
-      'condition',
-      'status',
-      'trackingCode',
-      'category',
-      'model',
-      'serialNumber',
-      'caliberGauge',
-      'barelLength',
-      'actionType',
-      'countryOfOrigin',
+      { key: 'name', label: 'Name' },
+      { key: 'manufacturer', label: 'Manufacturer' },
+      { key: 'dateAcquired', label: 'Date Acquired' },
+      { key: 'priceBought', label: 'Price Bought' },
+      { key: 'condition', label: 'Condition' },
+      { key: 'status', label: 'Status' },
+      { key: 'trackingCode', label: 'Tracking Code' },
+      { key: 'category', label: 'Category' },
+      { key: 'model', label: 'Model' },
+      { key: 'serialNumber', label: 'Serial Number' },
+      { key: 'caliberGauge', label: 'Caliber Gauge' },
+      { key: 'barelLength', label: 'Barrel Length' },
+      { key: 'actionType', label: 'Action Type' },
+      { key: 'countryOfOrigin', label: 'Country of Origin' },
     ],
   },
 };
 
 export function getSchema(type: SchemaType): Schema {
+	console.log( type );
   let schema = schemas[type] as Schema;
   // if the schema extends another schema, merge the two
   // exept the showInTable property, which should stay the same
@@ -152,18 +153,32 @@ export function getSchema(type: SchemaType): Schema {
     schema = {
       ...extendingSchema,
       ...schema,
-      showInTable: extendingSchema.showInTable,
+      showInTable: schema.showInTable,
     };
   }
 
   return schema;
 }
 
-export function getSchemaFromType<T>(): Schema {
-  if (Type.prototype.toString() === 'Part') return getSchema('Part');
-  if (Type.prototype.toString() === 'Magazine') return getSchema('Magazine');
-  if (Type.prototype.toString() === 'Accessory') return getSchema('Accessory');
-  if (Type.prototype.toString() === 'Weapon') return getSchema('Weapon');
+export function getSchemaFromType<T>(type: { new (): T } | Function): Schema {
+  if (!type || typeof type !== 'function') {
+    throw new Error(`Input must be a class constructor, received: ${typeof type}`);
+  }
 
-  return getSchema('Item');
+  const className = type.name;
+
+  switch (className) {
+    case 'Item':
+      return getSchema('Item');
+    case 'Part':
+      return getSchema('Part');
+    case 'Magazine':
+      return getSchema('Magazine');
+    case 'Accessory':
+      return getSchema('Accessory');
+    case 'Weapon':
+      return getSchema('Weapon');
+    default:
+      throw new Error(`Unknown type: ${className}`);
+  }
 }

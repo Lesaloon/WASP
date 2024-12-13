@@ -10,47 +10,46 @@ enum Status {
   IN_REPAIR = 'in_repair',
 }
 
-export interface Item {
-  id: Number;
-  name: string; // Corresponds to DataTypes.STRING
-  manufacturer: string; // Corresponds to DataTypes.STRING
-  link?: string; // Corresponds to DataTypes.STRING (optional)
-  dateAcquired: Date; // Corresponds to DataTypes.DATE
-  priceBought: number; // Corresponds to DataTypes.FLOAT
-  condition: Condition; // Corresponds to DataTypes.STRING (with enum values)
-  status: Status; // Corresponds to DataTypes.STRING (with enum values)
-  notes?: string; // Corresponds to DataTypes.STRING (optional)
-  warranty?: string; // Corresponds to DataTypes.STRING (optional)
-  trackingCode: string; // Corresponds to DataTypes.STRING (unique)
-  [key: string]: any; // Index signature to allow dynamic property access
+export class Item {
+  id!: number;
+  name!: string;
+  manufacturer!: string;
+  link?: string;
+  dateAcquired!: Date;
+  priceBought!: number;
+  condition!: Condition;
+  status!: Status;
+  notes?: string;
+  warranty?: string;
+  trackingCode!: string;
+  [key: string]: any;
 }
 
-export interface Part extends Item {
-  type: string;
+export class Part extends Item {
+  type!: string;
   compatibleModels?: string;
   weaponId?: number;
 }
 
-export interface Magazine extends Accessory {
-  type: string;
-  capacity: number;
-  caliberGauge: string;
-}
-
-export interface Accessory extends Item {
-  type: string;
+export class Accessory extends Item {
+  type!: string;
   weaponId?: number;
 }
 
-export interface Weapon extends Item {
-  category: string;
+export class Magazine extends Accessory {
+  capacity!: number;
+  caliberGauge!: string;
+}
+
+export class Weapon extends Item {
+  category!: string;
   subcategory?: string;
-  legalCategory: 'A1' | 'A2' | 'B' | 'C' | 'D';
+  legalCategory!: 'A1' | 'A2' | 'B' | 'C' | 'D';
   SIAExpireDate?: Date;
-  model: string;
-  serialNumber: string;
-  caliberGauge: string;
-  barelLength: string;
-  actionType: string;
-  countryOfOrigin: string;
+  model!: string;
+  serialNumber!: string;
+  caliberGauge!: string;
+  barelLength!: string;
+  actionType!: string;
+  countryOfOrigin!: string;
 }

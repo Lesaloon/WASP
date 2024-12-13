@@ -7,8 +7,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { DialogService, DialogRef, DialogCloseDirective } from '@ngneat/dialog';
-import { Item } from '../../Interfaces/item.interface';
-import { getSchemaFromType, Schema } from '../../Interfaces/schema-generator';
+import { Item } from '../../interfaces/item.interface';
+import { getSchemaFromType, Schema } from '../../interfaces/schema-generator';
 
 interface Data {
   schema: any;
@@ -41,7 +41,7 @@ export class DynamicFormComponent<T extends Item> implements OnInit {
 
   buildForm() {
     const formGroup: any = {};
-    this.schema = getSchemaFromType<T>();
+    this.schema = this.ref.data.schema;
     this.fields = Object.keys(this.schema.properties).map((key) => {
       const property = this.schema.properties[key] as any;
       const validators = [];

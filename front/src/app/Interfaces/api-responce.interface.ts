@@ -1,7 +1,7 @@
-import ITokenResponses from './tokenResponses.interface';
+import ITokenResponses from "./tokenResponses.interface";
 
 export interface ApiResponse<T> {
-  payload: T[];
+  payload: T[] | T;
   success: boolean;
   errors?: Object;
   message: string;

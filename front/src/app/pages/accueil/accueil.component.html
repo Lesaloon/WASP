@@ -1,5 +1,6 @@
 <div class="container">
   <h1>Page d'Accueil</h1>
-
-  <app-table [data]="weaponList"></app-table>
+  @if(!loading) {
+	<app-table [data]="weaponList" type="Weapon"></app-table>
+  }
 </div>
