@@ -1,0 +1,40 @@
+<div class="card p-4">
+	<header class="card-header">
+		<p class="card-header-title">Ajouter un element</p>
+		<button class="delete" aria-label="close" (click)="close()"></button>
+	</header>
+	<div class="flex-column p-4">
+		<form [formGroup]="form" (ngSubmit)="onSubmit()">
+			@for(field of fields; track $index) {
+			<div class="form-group">
+				<label [for]="field.name">{{ field.label }}</label>
+				@if(field.type !== 'textarea') {
+					<input [type]="field.type" [id]="field.name" [formControlName]="field.name"
+						[placeholder]="field.placeholder" class="form-control" />
+				}
+				@if (field.type === 'textarea') {
+					<textarea [id]="field.name" [formControlName]="field.name" [placeholder]="field.placeholder"
+						class="form-control"></textarea>
+				}
+				@if (form.get(field.name)?.invalid && form.get(field.name)?.touched) {
+				<div>
+					@if(form.get(field.name)?.hasError('required')) {
+					<small>{{ field.label }} is required.</small>
+					}
+					@if(form.get(field.name)?.hasError('pattern')) {
+					<small>Please enter a valid {{ field.label }}.</small>
+					}
+					@if(form.get(field.name)?.hasError('minLength')) {
+					<small>Minimum length is {{ field.minLength }}</small>
+					}
+					@if(form.get(field.name)?.hasError('maxLength')) {
+					<small>Maximum length is {{ field.maxLength }}</small>
+					}
+				</div>
+				}
+			</div>
+			}
+			<button type="submit" class="btn btn-primary" [disabled]="form.invalid">Submit</button>
+		</form>
+	</div>
+</div>
