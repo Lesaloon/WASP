@@ -10,19 +10,17 @@
 <table class="table">
   <thead>
     <tr>
-      <th>ID</th>
-      <th>Name</th>
-      <th>Manufacturer</th>
-      <th>Status</th>
+	  @for(header of schema.showInTable; track $index) {
+	  <th>{{ header }}</th>
+	  }
     </tr>
   </thead>
   <tbody>
-    @for (item of filteredData; track $index) {
+    @for (item of filteredData; track item) {
     <tr>
-      <td>{{ item.id }}</td>
-      <td>{{ item.name }}</td>
-      <td>{{ item.manufacturer }}</td>
-      <td>{{ item.status }}</td>
+      @for (field of schema.showInTable; track field) {
+    	<td>{{ item[field] }}</td>
+	  }
     </tr>
     }
   </tbody>

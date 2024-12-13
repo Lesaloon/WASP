@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { Item } from '../../Interfaces/item.interface';
 import { DialogService } from '@ngneat/dialog';
 import { DynamicFormComponent } from '../dynamic-form/dynamic-form.component';
-import { getSchemaFromType } from '../../Interfaces/schema-generator';
+import { getSchemaFromType, Schema } from '../../Interfaces/schema-generator';
 @Component({
   selector: 'app-table',
   standalone: true,
@@ -13,22 +13,22 @@ import { getSchemaFromType } from '../../Interfaces/schema-generator';
 })
 export class TableComponent<T extends Item> {
   @Input()
-  data: Array<Item> = [];
+  data: Array<T> = [];
   filterText: string = '';
+  schema: Schema = getSchemaFromType<T>();
 
   constructor(private dialog: DialogService) {}
 
-  get filteredData(): Array<Item> {
-    return this.data.filter((item: Item) =>
+  get filteredData(): Array<T> {
+    return this.data.filter((item: T) =>
       item.name.toLowerCase().includes(this.filterText.toLowerCase())
     );
   }
+
   addData() {
-
-
     this.dialog.open(DynamicFormComponent, {
       data: {
-        schema: getSchemaFromType<T>(),
+        schema: this.schema,
       },
     });
   }

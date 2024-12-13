@@ -22,6 +22,7 @@ export interface Item {
   notes?: string; // Corresponds to DataTypes.STRING (optional)
   warranty?: string; // Corresponds to DataTypes.STRING (optional)
   trackingCode: string; // Corresponds to DataTypes.STRING (unique)
+  [key: string]: any; // Index signature to allow dynamic property access
 }
 
 export interface Part extends Item {
