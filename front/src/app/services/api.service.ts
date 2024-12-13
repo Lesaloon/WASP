@@ -15,4 +15,12 @@ export class ApiService {
   createWeapon(weapon: Weapon) {
 	return this.http.post<Weapon>('weapon/', weapon);
   }
+
+  updateWeapon(weapon: Weapon) {
+	return this.http.put<Weapon>(`weapon/${weapon.id}`, weapon);
+  }
+
+  deleteWeapon(weapon: Weapon) {
+	return this.http.delete<Weapon>(`weapon/${weapon.id}`);
+  }
 }

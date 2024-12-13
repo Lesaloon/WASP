@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import ITokenResponses from '../Interfaces/ITokenResponses.interface';
+import ITokenResponses from '../Interfaces/tokenResponses.interface';
 import { ApiResponse } from '../Interfaces/api-responce.interface';
 import { BehaviorSubject, map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
