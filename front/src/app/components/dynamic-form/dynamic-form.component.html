@@ -1,40 +1,54 @@
 <div class="card p-4">
+	<!-- Container for the entire card with padding -->
 	<header class="card-header">
+		<!-- Header section of the card -->
 		<p class="card-header-title">Ajouter un element</p>
+		<!-- Title text in the header -->
 		<button class="delete" aria-label="close" (click)="close()"></button>
+		<!-- Close button with an event listener to trigger the 'close' method -->
 	</header>
 	<div class="flex-column p-4">
+		<!-- Main content container with vertical alignment and padding -->
 		<form [formGroup]="form" (ngSubmit)="onSubmit()">
+			<!-- Form bound to an Angular reactive form group with a submit event listener -->
 			@for(field of fields; track $index) {
+			<!-- Loop through each field object in the fields array -->
 			<div class="form-group">
+				<!-- Wrapper for individual form field -->
 				<label [for]="field.name">{{ field.label }}</label>
+				<!-- Label for the input, dynamically binding to the field's name -->
 				@if(field.type !== 'textarea') {
 					<input [type]="field.type" [id]="field.name" [formControlName]="field.name"
 						[placeholder]="field.placeholder" class="form-control" />
-				}
-				@if (field.type === 'textarea') {
+					<!-- Input element for fields that are not textarea, dynamically bound to the form group -->
+				}@else {
 					<textarea [id]="field.name" [formControlName]="field.name" [placeholder]="field.placeholder"
 						class="form-control"></textarea>
+					<!-- Textarea element for fields where the type is 'textarea', dynamically bound to the form group -->
 				}
 				@if (form.get(field.name)?.invalid && form.get(field.name)?.touched) {
+				<!-- Validation error messages: Displayed only if the field is invalid and has been touched -->
 				<div>
 					@if(form.get(field.name)?.hasError('required')) {
 					<small>{{ field.label }} is required.</small>
-					}
-					@if(form.get(field.name)?.hasError('pattern')) {
+					<!-- Error message for required fields -->
+					} @else if(form.get(field.name)?.hasError('pattern')) {
 					<small>Please enter a valid {{ field.label }}.</small>
-					}
-					@if(form.get(field.name)?.hasError('minLength')) {
+					<!-- Error message for pattern mismatch -->
+					} @else if(form.get(field.name)?.hasError('minLength')) {
 					<small>Minimum length is {{ field.minLength }}</small>
-					}
-					@if(form.get(field.name)?.hasError('maxLength')) {
+					<!-- Error message for minimum length violation -->
+					} @else if(form.get(field.name)?.hasError('maxLength')) {
 					<small>Maximum length is {{ field.maxLength }}</small>
+					<!-- Error message for maximum length violation -->
 					}
 				</div>
 				}
 			</div>
 			}
 			<button type="submit" class="btn btn-primary" [disabled]="form.invalid">Submit</button>
+			<!-- Submit button: Disabled if the form is invalid -->
+			<button type="button" class="btn btn-secondary" (click)="close()">Cancel</button>
 		</form>
 	</div>
 </div>
