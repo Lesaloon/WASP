@@ -1,42 +1,27 @@
 export type SchemaType = 'Item' | 'Part' | 'Magazine' | 'Accessory' | 'Weapon';
 export interface Schema {
-  $schema: string;
   title: string;
   type: string;
   extending?: SchemaType;
-  properties: Record<string, any>;
-  required: string[];
+  properties: Array<{ key: string; value: any }>;
   showInTable: Array<{ key: string; label: string }>;
 }
 
 const schemas: Record<SchemaType, object> = {
   Item: {
-    $schema: 'http://json-schema.org/draft-07/schema#',
     title: 'Item',
     type: 'object',
-    properties: {
-      //   id: { type: 'number', required: true, label: 'ID' },
-      name: { type: 'string', required: true, label: 'Name' },
-      manufacturer: { type: 'string', required: true, label: 'Manufacturer' },
-      link: { type: 'string', label: 'Link' },
-      dateAcquired: { type: 'date', required: true, label: 'Date Acquired' },
-      priceBought: { type: 'number', required: true, label: 'Price Bought' },
-      condition: {
-        type: 'string',
-        enum: ['new', 'used', 'refurbished'],
-        required: true,
-        label: 'Condition',
-      },
-      status: {
-        type: 'string',
-        enum: ['in_use', 'out_of_use', 'in_repair'],
-        required: true,
-        label: 'Status',
-      },
-      notes: { type: 'string', label: 'Notes' },
-      warranty: { type: 'string', label: 'Warranty' },
-      //   trackingCode: { type: 'string', required: true, label: 'Tracking Code' },
-    },
+    properties: [
+      { key: 'name', value: { type: 'string', required: true, label: 'Name' } },
+      { key: 'manufacturer', value: { type: 'string', required: true, label: 'Manufacturer' } },
+      { key: 'link', value: { type: 'string', label: 'Link' } },
+      { key: 'dateAcquired', value: { type: 'date', required: true, label: 'Date Acquired' } },
+      { key: 'priceBought', value: { type: 'number', required: true, label: 'Price Bought' } },
+      { key: 'condition', value: { type: 'string', enum: ['new', 'used', 'refurbished'], required: true, label: 'Condition' } },
+      { key: 'status', value: { type: 'string', enum: ['in_use', 'out_of_use', 'in_repair'], required: true, label: 'Status' } },
+      { key: 'notes', value: { type: 'string', label: 'Notes' } },
+      { key: 'warranty', value: { type: 'string', label: 'Warranty' } },
+    ],
     showInTable: [
       { key: 'name', label: 'Name' },
       { key: 'manufacturer', label: 'Manufacturer' },
@@ -48,15 +33,14 @@ const schemas: Record<SchemaType, object> = {
     ],
   },
   Part: {
-    $schema: 'http://json-schema.org/draft-07/schema#',
     title: 'Part',
     type: 'object',
-    properties: {
+    properties: [
       // ...existing properties from Item
-      type: { type: 'string', required: true, label: 'Type' },
-      compatibleModels: { type: 'string', label: 'Compatible Models' },
-      weaponId: { type: 'number', label: 'Weapon ID', foreignKey: 'Weapon' },
-    },
+      { key: 'type', value: { type: 'string', required: true, label: 'Type' } },
+      { key: 'compatibleModels', value: { type: 'string', label: 'Compatible Models' } },
+      { key: 'weaponId', value: { type: 'number', label: 'Weapon ID', foreignKey: 'Weapon' } },
+    ],
     extending: 'Item',
     showInTable: [
       { key: 'name', label: 'Name' },
@@ -69,15 +53,14 @@ const schemas: Record<SchemaType, object> = {
     ],
   },
   Magazine: {
-    $schema: 'http://json-schema.org/draft-07/schema#',
     title: 'Magazine',
     type: 'object',
-    properties: {
+    properties: [
       // ...existing properties from Accessory
-      type: { type: 'string', required: true, label: 'Type' },
-      capacity: { type: 'number', required: true, label: 'Capacity' },
-      caliberGauge: { type: 'string', required: true, label: 'Caliber Gauge' },
-    },
+      { key: 'type', value: { type: 'string', required: true, label: 'Type' } },
+      { key: 'capacity', value: { type: 'number', required: true, label: 'Capacity' } },
+      { key: 'caliberGauge', value: { type: 'string', required: true, label: 'Caliber Gauge' } },
+    ],
     extending: 'Item',
     showInTable: [
       { key: 'name', label: 'Name' },
@@ -93,14 +76,13 @@ const schemas: Record<SchemaType, object> = {
     ],
   },
   Accessory: {
-    $schema: 'http://json-schema.org/draft-07/schema#',
     title: 'Accessory',
     type: 'object',
-    properties: {
+    properties: [
       // ...existing properties from Item
-      type: { type: 'string', required: true, label: 'Type' },
-      weaponId: { type: 'number', label: 'Weapon ID', foreignKey: 'Weapon' },
-    },
+      { key: 'type', value: { type: 'string', required: true, label: 'Type' } },
+      { key: 'weaponId', value: { type: 'number', label: 'Weapon ID', foreignKey: 'Weapon' } },
+    ],
     extending: 'Item',
     showInTable: [
       { key: 'name', label: 'Name' },
@@ -114,35 +96,21 @@ const schemas: Record<SchemaType, object> = {
     ],
   },
   Weapon: {
-    $schema: 'http://json-schema.org/draft-07/schema#',
     title: 'Weapon',
     type: 'object',
-    properties: {
+    properties: [
       // ...existing properties from Item
-      category: { type: 'string', required: true, label: 'Category' },
-      subcategory: { type: 'string', label: 'Subcategory' },
-      legalCategory: {
-        type: 'string',
-        enum: ['A1', 'A2', 'B', 'C', 'D'],
-        required: true,
-        label: 'Legal Category',
-      },
-      SIAExpireDate: {
-        type: 'string',
-        format: 'date-time',
-        label: 'SIA Expire Date',
-      },
-      model: { type: 'string', required: true, label: 'Model' },
-      serialNumber: { type: 'string', required: true, label: 'Serial Number' },
-      caliberGauge: { type: 'string', required: true, label: 'Caliber Gauge' },
-      barelLength: { type: 'string', required: true, label: 'Barrel Length' },
-      actionType: { type: 'string', required: true, label: 'Action Type' },
-      countryOfOrigin: {
-        type: 'string',
-        required: true,
-        label: 'Country of Origin',
-      },
-    },
+      { key: 'category', value: { type: 'string', required: true, label: 'Category' } },
+      { key: 'subcategory', value: { type: 'string', label: 'Subcategory' } },
+      { key: 'legalCategory', value: { type: 'string', enum: ['A1', 'A2', 'B', 'C', 'D'], required: true, label: 'Legal Category' } },
+      { key: 'SIAExpireDate', value: { type: 'string', format: 'date-time', label: 'SIA Expire Date' } },
+      { key: 'model', value: { type: 'string', required: true, label: 'Model' } },
+      { key: 'serialNumber', value: { type: 'string', required: true, label: 'Serial Number' } },
+      { key: 'caliberGauge', value: { type: 'string', required: true, label: 'Caliber Gauge' } },
+      { key: 'barelLength', value: { type: 'string', required: true, label: 'Barrel Length' } },
+      { key: 'actionType', value: { type: 'string', required: true, label: 'Action Type' } },
+      { key: 'countryOfOrigin', value: { type: 'string', required: true, label: 'Country of Origin' } },
+    ],
     extending: 'Item',
     showInTable: [
       { key: 'name', label: 'Name' },
@@ -166,13 +134,15 @@ const schemas: Record<SchemaType, object> = {
 export function getSchema(type: SchemaType): Schema {
   console.log(type);
   let schema = schemas[type] as Schema;
+  let og = schema;
+
   // if the schema extends another schema, merge the two
-  // exept the showInTable property, which should stay the same
+  // except the showInTable property, which should stay the same
   if (schema.extending) {
     let extendingSchema = schemas[schema.extending] as Schema;
     schema = {
       ...schema,
-      properties: { ...schema.properties, ...extendingSchema.properties },
+      properties: [...extendingSchema.properties, ...schema.properties],
       showInTable: schema.showInTable,
     };
   }

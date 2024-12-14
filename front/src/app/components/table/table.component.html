@@ -1,27 +1,27 @@
 @if(!loading) {
 
 <div class="filter">
-  <input type="text" [(ngModel)]="filterText" placeholder="Filter by description" />
-  <button (click)="addData()">Add Data</button>
+	<input type="text" [(ngModel)]="filterText" placeholder="Filter by description" />
+	<button (click)="addData()">Add Data</button>
 </div>
 
 <table class="table">
-  <thead>
-    <tr>
-      @for(header of schema.showInTable; track $index) {
-      <th>{{ header.label }}</th>
-      }
-    </tr>
-  </thead>
-  <tbody>
-    @for (item of filteredData; track item) {
-    <tr>
-      @for (field of schema.showInTable; track field) {
-      <td>{{ item[field.key] }}</td>
-      }
-    </tr>
-    }
-  </tbody>
+	<thead>
+		<tr>
+			@for(header of schema.showInTable; track $index) {
+			<th>{{ header.label }}</th>
+			}
+		</tr>
+	</thead>
+	<tbody>
+		@for (item of filteredData; track item) {
+		<tr>
+			@for (field of schema.showInTable; track field) {
+			<td>{{ item[field.key] }}</td>
+			}
+		</tr>
+		}
+	</tbody>
 </table>
 
 }
