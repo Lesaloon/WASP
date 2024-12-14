@@ -1,36 +1,35 @@
 <div class="login-container">
-  <h2>Connexion</h2>
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <div>
-      <label for="email">Adresse e-mail</label>
-      <input id="email" formControlName="email" type="email" />
-      @if(loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty ||
-      loginForm.get('email')?.touched)) {
+	<h2>Connexion</h2>
+	<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+		<div>
+			<label for="email">Adresse e-mail</label>
+			<input id="email" formControlName="email" type="email" />
+			@if(loginForm.get('email')?.invalid &&
+			(loginForm.get('email')?.dirty || loginForm.get('email')?.touched))
+			{
 
-      <div>
-        <small *ngIf="loginForm.get('email')?.errors?.['required']"
-          >L'adresse e-mail est requise.</small
-        >
-        <small *ngIf="loginForm.get('email')?.errors?.['email']"
-          >L'adresse e-mail est invalide.</small
-        >
-      </div>
-      }
-    </div>
-    <!-- TODO : remove the *ngIf for the @if that is newer and better -->
-    <div>
-      <label for="password">Mot de passe</label>
-      <input id="password" formControlName="password" type="password" />
-      <div *ngIf="loginForm.get('password')?.invalid">
-        <small *ngIf="loginForm.get('password')?.errors?.['required']"
-          >Le mot de passe est requis.</small
-        >
-        <small *ngIf="loginForm.get('password')?.errors?.['minlength']"
-          >Le mot de passe doit comporter au moins 6 caractères.</small
-        >
-      </div>
-    </div>
+			<div>
+				@if(loginForm.get('email')?.errors?.['required']) {
+				<small>L'adresse e-mail est requise.</small>
+				} @if(loginForm.get('email')?.errors?.['email']) {
+				<small>L'adresse e-mail est invalide.</small>
+				}
+			</div>
+			}
+		</div>
+		<div>
+			<label for="password">Mot de passe</label>
+			<input id="password" formControlName="password" type="password" />
+			@if(loginForm.get('password')?.invalid ||
+			(loginForm.get('password')?.errors?.['required'])) {
+			<small>Le mot de passe est requis.</small>
+			} @if(loginForm.get('password')?.errors?.['minlength']) {
+			<small>Le mot de passe doit comporter au moins 6 caractères.</small>
+			}
+		</div>
 
-    <button type="submit" [disabled]="loginForm.invalid">Se connecter</button>
-  </form>
+		<button type="submit" [disabled]="loginForm.invalid">
+			Se connecter
+		</button>
+	</form>
 </div>
