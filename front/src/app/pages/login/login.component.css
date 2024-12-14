@@ -1,0 +1,67 @@
+/* Conteneur principal du formulaire de connexion */
+.login-container {
+  max-width: 400px; /* Largeur maximale du conteneur */
+  margin: 50px auto; /* Centrer le conteneur horizontalement et ajouter une marge en haut */
+  padding: 20px; /* Espacement interne */
+  border: 1px solid #ccc; /* Bordure grise */
+  border-radius: 8px; /* Coins arrondis */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Ombre légère */
+  background-color: #ffffff; /* Couleur de fond blanche */
+}
+
+/* Titre du formulaire */
+.login-container h2 {
+  text-align: center; /* Centrer le texte */
+  margin-bottom: 20px; /* Marge inférieure */
+  color: #333; /* Couleur du texte */
+}
+
+/* Style des éléments de formulaire */
+.login-container form {
+  display: flex; /* Utiliser flexbox pour la mise en page */
+  flex-direction: column; /* Orientation verticale */
+}
+
+/* Style des labels */
+.login-container label {
+  margin-bottom: 5px; /* Marge inférieure pour espacer les labels des champs */
+  font-weight: bold; /* Mettre le texte en gras */
+}
+
+.login-container input[type="email"],
+.login-container input[type="password"] {
+  padding: 10px; /* Espacement interne */
+  margin-bottom: 15px; /* Marge inférieure pour espacer les champs */
+  border: 1px solid #ccc; /* Bordure grise */
+  border-radius: 4px; /* Coins arrondis */
+  font-size: 16px; /* Taille de police */
+}
+
+/* Style des messages d'erreur */
+.login-container small {
+  color: red; /* Couleur rouge pour les messages d'erreur */
+  font-size: 12px; /* Taille de police plus petite */
+}
+
+/* Style du bouton de soumission */
+.login-container button {
+  padding: 10px; /* Espacement interne */
+  background-color: #007bff; /* Couleur de fond bleue */
+  color: white; /* Couleur du texte blanche */
+  border: none; /* Pas de bordure */
+  border-radius: 4px; /* Coins arrondis */
+  font-size: 16px; /* Taille de police */
+  cursor: pointer; /* Curseur en forme de main */
+  transition: background-color 0.3s; /* Transition pour l'effet de survol */
+}
+
+/* Effet de survol sur le bouton */
+.login-container button:hover {
+  background-color: #0056b3; /* Couleur de fond plus foncée au survol */
+}
+
+/* Désactiver le style du bouton lorsqu'il est désactivé */
+.login-container button:disabled {
+  background-color: #ccc; /* Couleur de fond grise pour le bouton désactivé */
+  cursor: not-allowed; /* Curseur interdit */
+}
