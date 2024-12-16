@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { ApiResponse } from '../Interface/api-responce.interface';
+import { ApiResponse } from '../interfaces/api-responce.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +11,7 @@ export class HttpService {
 
   static URL = 'http://localhost:3000/api/';
 
-  get<T>(url: string): Observable<T[]> {
+  get<T>(url: string): Observable<T | T[]> {
     return this.http.get(HttpService.URL + url).pipe(
       map((response: Object) => {
         const apiResponse = response as ApiResponse<T>;
@@ -26,7 +26,7 @@ export class HttpService {
     );
   }
 
-  post<T>(url: string, data: any): Observable<T[]> {
+  post<T>(url: string, data: any): Observable<T | T[]> {
     return this.http.post(HttpService.URL + url, data).pipe(
       map((response: Object) => {
         const apiResponse = response as ApiResponse<T>;
@@ -41,7 +41,7 @@ export class HttpService {
     );
   }
 
-  put<T>(url: string, data: any): Observable<T[]> {
+  put<T>(url: string, data: any): Observable<T | T[]> {
     return this.http.put(HttpService.URL + url, data).pipe(
       map((response: Object) => {
         const apiResponse = response as ApiResponse<T>;
@@ -56,7 +56,7 @@ export class HttpService {
     );
   }
 
-  delete<T>(url: string): Observable<T[]> {
+  delete<T>(url: string): Observable<T | T[]> {
     return this.http.delete(HttpService.URL + url).pipe(
       map((response: Object) => {
         const apiResponse = response as ApiResponse<T>;

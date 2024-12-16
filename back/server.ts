@@ -5,12 +5,15 @@ logger.info("Starting server...");
 import bodyParser from "body-parser";
 import cors from "cors";
 import dotenv from "dotenv";
-import express, { Express } from "express";
+import express, { Express, NextFunction } from "express";
 import { sequelize } from "./database";
 import responseWrapper from "./middleware/responseWrapper.middleware";
 import accessoryRoutes from "./routes/accessory.routes";
 import magazineRoutes from "./routes/magazine.routes";
 import weaponRoutes from "./routes/weapon.routes";
+import partRoutes from "./routes/part.routes";
+import authRoutes from "./routes/auth.routes";
+import errorHandler from "./middleware/errorhandler.middleware";
 // Import models to ensure they are registered with Sequelize
 logger.info("Importing models...");
 
@@ -24,10 +27,12 @@ logger.info("Adding middleware...");
 app.use(cors());
 app.use(bodyParser.json());
 app.use(responseWrapper);
+// app.use(errorHandler);
 app.use("/api/weapon", weaponRoutes);
 app.use("/api/accessory", accessoryRoutes);
 app.use("/api/magazine", magazineRoutes);
-//app.use(errorHandler);
+app.use("/api/part", partRoutes);
+app.use("/api/auth", authRoutes);
 
 logger.info("Connecting to the database...");
 sequelize

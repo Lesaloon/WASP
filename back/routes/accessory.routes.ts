@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { AccessoryController } from "../controllers/accessory.controller";
-
 const router = Router();
 
 router.get("/", AccessoryController.getAll);

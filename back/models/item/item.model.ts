@@ -1,12 +1,16 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../../database";
-import { generateTrackingNumber } from "../../helpers/tracking.helper";
 import { Status } from "./status.enum";
 import { Condition } from "./condition.enum";
 
 export class Item extends Model {}
 
 export const itemAttributes = {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
   name: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -33,7 +37,7 @@ export const itemAttributes = {
     type: DataTypes.STRING,
     allowNull: false,
     defaultValue: "new",
-	values: Object.values(Condition),
+    values: Object.values(Condition),
   },
   status: {
     type: DataTypes.STRING,
