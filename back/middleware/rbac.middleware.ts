@@ -11,8 +11,8 @@ export const checkRole = (requiredRole: 'user' | 'admin') => {
       res.status(403).json({ message: 'Access denied. Must be logged in with a valid user' });
       return;
     }
-    const userRole = user.get().role;
-    if (userRole.includes(requiredRole) || userRole.includes('admin')) {
+    const role = user.get().role;
+    if (role.includes(requiredRole) || role.includes('admin')) {
       (req as any).user = user;
       next();  // Call the next middleware if the user has the required role
     } else {

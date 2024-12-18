@@ -37,8 +37,8 @@ export class AuthController {
 				return;
 			}
 
-			const token = generateToken(user);
-			const userWithoutPassword = user as any;
+			const token = generateToken(user.dataValues);
+			const userWithoutPassword = user.dataValues as any;
 			userWithoutPassword.password = undefined;
 			res.json({ token, user: userWithoutPassword});
 		} catch (error) {
@@ -48,15 +48,27 @@ export class AuthController {
 
 	static register: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
 		console.log("register");
-		const { email, password } = req.body;
+		const { email, password, firstName, lastName } = req.body;
+		// check if the user already exists
+		const user = await User.findOne({
+			where: {
+				email,
+			},
+		});
+		if (user) {
+			next(new Error("User already exists"));
+			return;
+		}
+		// create
 
 		try {
-			const newUser = new User({ email, password, role: "user" });
+			const newUser = new User({ email, password, firstName, lastName, role: "user" });
+			console.log(newUser);
 			await newUser.save();
-			const userWithoutPassword = newUser as any;
+			const userWithoutPassword = newUser.dataValues as any;
 			userWithoutPassword.password = undefined;
-			const token = generateToken(userWithoutPassword);
-			res.status(201).json({ token, user: newUser });
+			const token = generateToken(newUser.dataValues);
+			res.status(201).json({ token, user: userWithoutPassword });
 		} catch (error) {
 			next(error);
 		}

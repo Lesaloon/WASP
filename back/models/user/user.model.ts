@@ -43,6 +43,7 @@ export const userAttributes = {
     type: DataTypes.STRING,
     allowNull: false,
     defaultValue: "user",
+    values: ["user", "writer", "admin"], // user < writer < admin
   },
 };
 
@@ -60,12 +61,12 @@ User.init(
     role: {
       ...userAttributes.role,
       // for mssql
-      get() {
-        return JSON.parse(this.getDataValue("role"));
-      },
-      set(value: string[]) {
-        this.setDataValue("role", JSON.stringify(value));
-      },
+      // get() {
+      //   return JSON.parse(this.getDataValue("role"));
+      // },
+      // set(value: string[]) {
+      //   this.setDataValue("role", JSON.stringify(value));
+      // },
     },
   },
   {
