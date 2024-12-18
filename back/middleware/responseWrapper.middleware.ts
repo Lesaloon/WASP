@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import ICustomResponses from "../interfaces/ICustomResponses.interface";
-import { User } from "../models/user/user.model";
+import { IUser, User } from "../models/user/user.model";
 import { generateTokenFromUser } from "./jwt.middleware";
 
 export interface LoggedRequest extends Request {
-  user?: User;
+  user?: IUser;
 }
 
 const responseWrapper = (req: Request, res: Response, next: NextFunction) => {
@@ -30,7 +30,7 @@ const responseWrapper = (req: Request, res: Response, next: NextFunction) => {
       newData.token = {
         token: generateTokenFromUser(user),
         expiresTime: new Date(Date.now() + 1 * 60 * 60 * 1000), // 1 hour
-		role: user.get().role,
+		    role: user.role,
       };
     }
 

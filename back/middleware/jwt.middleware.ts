@@ -33,14 +33,14 @@ export const jwtMiddleware = expressjwt({
   algorithms: ["HS256"],
   requestProperty: "user",
   credentialsRequired: true,
-  getToken: getTokenFromQueryOrHeader, // Use custom token retrieval function
+  //getToken: getTokenFromQueryOrHeader, // Use custom token retrieval function
 }).unless({
-  path: ["/api/auth/login", "/api/auth/register", "/api"], // Define paths to bypass authentication
+  path: ["/api/auth/login", "/api/auth/register"], // Define paths to bypass authentication
 });
 
-export function generateTokenFromUser(user: User): string {
+export function generateTokenFromUser(user: any): string {
   return jwt.sign(
-    { id: user.get().id, email: user.get().email, password: user.get().password },
+    { id: user.id, email: user.email, password: user.password,  role: user.role },
     (process.env.JWT_SECRET as string) ?? "test",
     { expiresIn: process.env.JWT_EXPIRES_IN }
   );

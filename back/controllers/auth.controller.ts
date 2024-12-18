@@ -3,16 +3,9 @@ import { User } from '../models/user/user.model';
 import jwt from 'jsonwebtoken';
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
+import { generateTokenFromUser } from '../middleware/jwt.middleware';
 dotenv.config();
 
-// Generate JWT token
-const generateToken = (user: any) => {
-	return jwt.sign(
-		{ id: user._id, role: user.role },	// Include role in the payload
-		process.env.JWT_SECRET ?? 'test',		// Use the secret key from the .env file
-		{ expiresIn: process.env.JWT_EXPIRES_IN }
-	);
-};
 
 export class AuthController {
 	static login: RequestHandler = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -37,7 +30,7 @@ export class AuthController {
 				return;
 			}
 
-			const token = generateToken(user.dataValues);
+			const token = generateTokenFromUser(user.dataValues);
 			const userWithoutPassword = user.dataValues as any;
 			userWithoutPassword.password = undefined;
 			res.json({ token, user: userWithoutPassword});
@@ -67,7 +60,7 @@ export class AuthController {
 			await newUser.save();
 			const userWithoutPassword = newUser.dataValues as any;
 			userWithoutPassword.password = undefined;
-			const token = generateToken(newUser.dataValues);
+			const token = generateTokenFromUser(newUser.dataValues);
 			res.status(201).json({ token, user: userWithoutPassword });
 		} catch (error) {
 			next(error);
@@ -91,7 +84,7 @@ export class AuthController {
 				return;
 			}
 
-			const newToken = generateToken(user);
+			const newToken = generateTokenFromUser(user.dataValues);
 			res.json({ token: newToken });
 		} catch (error) {
 			next(error);
