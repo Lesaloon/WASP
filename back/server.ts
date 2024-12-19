@@ -14,6 +14,7 @@ import weaponRoutes from "./routes/weapon.routes";
 import partRoutes from "./routes/part.routes";
 import authRoutes from "./routes/auth.routes";
 import errorHandler from "./middleware/errorhandler.middleware";
+import { jwtMiddleware } from "./middleware/jwt.middleware";
 // Import models to ensure they are registered with Sequelize
 logger.info("Importing models...");
 
@@ -27,6 +28,7 @@ logger.info("Adding middleware...");
 app.use(cors());
 app.use(bodyParser.json());
 app.use(responseWrapper);
+app.use(jwtMiddleware);
 // app.use(errorHandler);
 app.use("/api/weapon", weaponRoutes);
 app.use("/api/accessory", accessoryRoutes);

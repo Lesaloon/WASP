@@ -12,6 +12,7 @@ export async function getTrackingCounter(
         [Op.like]: prefix + "%",
       },
     },
+    order: [["createdAt", "DESC"]],
   });
   if (result.length === 0) {
     return 0;
