@@ -6,9 +6,9 @@ set -e
 # Configuration
 POSTGRES_IMAGE="postgres:latest"
 CONTAINER_NAME="WASP_DB_CONTAINER"
-POSTGRES_USER="useraccount"
+POSTGRES_USER="waspuser"
 POSTGRES_PASSWORD="password"
-POSTGRES_DB="WASP-DATABASE"
+POSTGRES_DB="wasp-database"
 POSTGRES_PORT=5432
 ENV_FILE=".env.local"
 
