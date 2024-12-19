@@ -6,7 +6,6 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import express, { Express, NextFunction } from "express";
-import { sequelize } from "./database";
 import responseWrapper from "./middleware/responseWrapper.middleware";
 import accessoryRoutes from "./routes/accessory.routes";
 import magazineRoutes from "./routes/magazine.routes";
@@ -14,6 +13,7 @@ import weaponRoutes from "./routes/weapon.routes";
 import partRoutes from "./routes/part.routes";
 import authRoutes from "./routes/auth.routes";
 import errorHandler from "./middleware/errorhandler.middleware";
+import { sequelize } from "./config/database";
 // Import models to ensure they are registered with Sequelize
 logger.info("Importing models...");
 
@@ -49,7 +49,6 @@ sequelize
     app.listen(port, () => {
       logger.info(`Server started on port ${port}`);
     });
-  })
-  .catch((err) => {
+  })  .catch((err) => {
     logger.fatal("Database connection failed", err);
   });

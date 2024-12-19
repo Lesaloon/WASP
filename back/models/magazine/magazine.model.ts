@@ -1,5 +1,5 @@
 import { DataTypes } from "sequelize";
-import { sequelize } from "../../database";
+import { sequelize } from "../../config/database";
 import { Accessory, accessoryAttributes } from "../accessory/accessory.model";
 
 export class Magazine extends Accessory {}
