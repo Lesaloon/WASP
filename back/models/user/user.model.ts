@@ -43,8 +43,18 @@ export const userAttributes = {
     type: DataTypes.STRING,
     allowNull: false,
     defaultValue: "user",
+    //values: ["user", "writer", "admin"], // user < writer < admin
   },
 };
+
+export interface IUser {
+  id: number;
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  role: string;
+}
 
 User.init(
   {
@@ -60,7 +70,7 @@ User.init(
     role: {
       ...userAttributes.role,
       // for mssql
-      get() {
+      get(): string[] {
         return JSON.parse(this.getDataValue("role"));
       },
       set(value: string[]) {

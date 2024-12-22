@@ -3,16 +3,9 @@ import { User } from '../models/user/user.model';
 import jwt from 'jsonwebtoken';
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
+import { generateTokenFromUser } from '../middleware/jwt.middleware';
 dotenv.config();
 
-// Generate JWT token
-const generateToken = (user: any) => {
-	return jwt.sign(
-		{ id: user._id, role: user.role },	// Include role in the payload
-		process.env.JWT_SECRET ?? 'test',		// Use the secret key from the .env file
-		{ expiresIn: process.env.JWT_EXPIRES_IN }
-	);
-};
 
 export class AuthController {
 	static login: RequestHandler = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -37,8 +30,8 @@ export class AuthController {
 				return;
 			}
 
-			const token = generateToken(user);
-			const userWithoutPassword = user as any;
+			const token = generateTokenFromUser(user.dataValues);
+			const userWithoutPassword = user.dataValues as any;
 			userWithoutPassword.password = undefined;
 			res.json({ token, user: userWithoutPassword});
 		} catch (error) {
@@ -48,15 +41,27 @@ export class AuthController {
 
 	static register: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
 		console.log("register");
-		const { email, password } = req.body;
+		const { email, password, firstName, lastName } = req.body;
+		// check if the user already exists
+		const user = await User.findOne({
+			where: {
+				email,
+			},
+		});
+		if (user) {
+			next(new Error("User already exists"));
+			return;
+		}
+		// create
 
 		try {
-			const newUser = new User({ email, password, role: "user" });
+			const newUser = new User({ email, password, firstName, lastName, role: "user" });
+			console.log(newUser);
 			await newUser.save();
-			const userWithoutPassword = newUser as any;
+			const userWithoutPassword = newUser.dataValues as any;
 			userWithoutPassword.password = undefined;
-			const token = generateToken(userWithoutPassword);
-			res.status(201).json({ token, user: newUser });
+			const token = generateTokenFromUser(newUser.dataValues);
+			res.status(201).json({ token, user: userWithoutPassword });
 		} catch (error) {
 			next(error);
 		}
@@ -79,7 +84,7 @@ export class AuthController {
 				return;
 			}
 
-			const newToken = generateToken(user);
+			const newToken = generateTokenFromUser(user.dataValues);
 			res.json({ token: newToken });
 		} catch (error) {
 			next(error);
