@@ -1,34 +1,52 @@
-<div class="login-container">
-	<h2>Connexion</h2>
-	<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-		<div>
-			<label for="email">Adresse e-mail</label>
-			<input id="email" formControlName="email" type="email" />
+<div class="container is-flex is-align-items-center is-flex-direction-column">
+	<h2 class="title is-2 has-text-centered">Connexion</h2>
+	<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="box">
+		<div class="field">
+			<label class="label" for="email">Adresse e-mail</label>
+			<div class="control">
+				<input
+					id="email"
+					formControlName="email"
+					type="email"
+					class="input"
+				/>
+			</div>
 			@if(loginForm.get('email')?.invalid &&
 			(loginForm.get('email')?.dirty || loginForm.get('email')?.touched))
 			{
-
-			<div>
-				@if(loginForm.get('email')?.errors?.['required']) {
-				<small>L'adresse e-mail est requise.</small>
-				} @if(loginForm.get('email')?.errors?.['email']) {
-				<small>L'adresse e-mail est invalide.</small>
-				}
+			<div class="help is-danger">
+				@if(loginForm.get('email')?.errors?.['required']) { L'adresse
+				e-mail est requise. }
+				@if(loginForm.get('email')?.errors?.['email']) { L'adresse
+				e-mail est invalide. }
 			</div>
 			}
 		</div>
-		<div>
-			<label for="password">Mot de passe</label>
-			<input id="password" formControlName="password" type="password" />
+		<div class="field">
+			<label class="label" for="password">Mot de passe</label>
+			<div class="control">
+				<input
+					id="password"
+					formControlName="password"
+					type="password"
+					class="input"
+				/>
+			</div>
 			@if(loginForm.get('password')?.invalid ||
 			(loginForm.get('password')?.errors?.['required'])) {
-			<small>Le mot de passe est requis.</small>
+			<div class="help is-danger">Le mot de passe est requis.</div>
 			} @if(loginForm.get('password')?.errors?.['minlength']) {
-			<small>Le mot de passe doit comporter au moins 6 caractères.</small>
+			<div class="help is-danger">
+				Le mot de passe doit comporter au moins 6 caractères.
+			</div>
 			}
 		</div>
 
-		<button type="submit" [disabled]="loginForm.invalid">
+		<button
+			type="submit"
+			class="button is-link"
+			[disabled]="loginForm.invalid"
+		>
 			Se connecter
 		</button>
 	</form>

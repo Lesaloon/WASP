@@ -1,37 +1,64 @@
-import { CommonModule, NgIf } from '@angular/common';
+// src/app/login/login.component.ts
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
+	FormBuilder,
+	FormGroup,
+	ReactiveFormsModule,
+	Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service'; // Import your AuthService
+
+// Define an interface for the expected response
+interface AuthResponse {
+	success: boolean;
+	// Add other properties if needed
+}
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, NgIf],
-  styleUrls: ['login.component.css'],
+	selector: 'app-login',
+	templateUrl: './login.component.html',
+	standalone: true,
+	imports: [ReactiveFormsModule, CommonModule],
 })
 export class LoginComponent implements OnInit {
-  loginForm: FormGroup;
+	loginForm: FormGroup;
+	error: string | null = null; // To store error messages
 
-  constructor(private formBuilder: FormBuilder) {
-    this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required /*, Validators.minLength(6)*/]],
-    });
-  }
+	constructor(
+		private formBuilder: FormBuilder,
+		private authService: AuthService,
+		private router: Router
+	) {
+		this.loginForm = this.formBuilder.group({
+			email: ['', [Validators.required, Validators.email]],
+			password: ['', [Validators.required /*, Validators.minLength(6)*/]],
+		});
+	}
 
-  ngOnInit(): void {}
+	ngOnInit(): void {}
 
-  onSubmit(): void {
-    if (!this.loginForm.valid) {
-      return;
-    }
-    const formData = this.loginForm.value;
-    console.log('Form Data:', formData);
-    // Ici, vous pouvez ajouter votre logique d'authentification.
-  }
+	onSubmit(): void {
+		if (!this.loginForm.valid) {
+			return;
+		}
+		const { email, password } = this.loginForm.value;
+
+		this.authService.login(email, password).subscribe({
+			next: (response: AuthResponse) => {
+				if (response.success) {
+					// Navigate to the dashboard on successful login
+					this.router.navigate(['/dashboard']);
+				} else {
+					// Handle unsuccessful login
+					this.error = 'Identifiants invalides. Veuillez réessayer.';
+				}
+			},
+			error: (err: any) => {
+				// Handle error from AuthService
+				this.error = 'Une erreur est survenue : ' + err.message;
+			},
+		});
+	}
 }

@@ -1,3 +1,25 @@
 :host {
-  min-height: 100vh;
+	min-height: 100vh;
+}
+
+/* New styles for responsiveness */
+@media (max-width: 768px) {
+	aside.menu {
+		display: none; /* Hide the sidebar on small screens */
+	}
+
+	/* Optionally, you can add a toggle button for mobile view */
+	.menu-toggle {
+		display: block; /* Show toggle button */
+	}
+}
+
+@media (min-width: 769px) {
+	aside.menu {
+		display: block; /* Show the sidebar on larger screens */
+	}
+
+	.menu-toggle {
+		display: none; /* Hide toggle button on larger screens */
+	}
 }
