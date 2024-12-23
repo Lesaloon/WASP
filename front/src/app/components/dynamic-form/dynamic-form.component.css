@@ -3,3 +3,14 @@ textarea.ng-invalid.ng-touched,
 select.ng-invalid.ng-touched {
 	border-color: red;
 }
+
+@media (max-width: 768px) {
+	.modal-card-body {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.field {
+		margin-bottom: 1rem;
+	}
+}
