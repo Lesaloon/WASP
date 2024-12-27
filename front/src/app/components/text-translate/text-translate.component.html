@@ -1,6 +1,8 @@
 <div>
-	<h2>Translate Unreadable Text</h2>
-	<input [(ngModel)]="unreadableText" placeholder="Enter unreadable text" />
-	<button (click)="translateText()">Translate</button>
-	<p *ngIf="translatedText">Translation: {{ translatedText }}</p>
+	<label for="textInput">Texte à traduire:</label>
+	<input id="textInput" [(ngModel)]="unreadableText" />
+	<button (click)="translateText()">Traduire</button>
+</div>
+<div *ngIf="translatedText">
+	<p>Traduction: {{ translatedText }}</p>
 </div>

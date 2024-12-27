@@ -8,7 +8,11 @@
 			<!-- Modal header section -->
 			<p class="modal-card-title">Ajouter un {{ schema.title }}</p>
 			<!-- Title -->
-			<button class="delete" aria-label="close" (click)="close()"></button>
+			<button
+				class="delete"
+				aria-label="close"
+				(click)="close()"
+			></button>
 			<!-- Close button -->
 		</header>
 		<section class="modal-card-body">
@@ -28,41 +32,61 @@
 						<!-- Wrapper for input or textarea -->
 						@if(field.type === 'select') {
 						<div class="select">
-							<select [id]="field.name" [formControlName]="field.name">
+							<select
+								[id]="field.name"
+								[formControlName]="field.name"
+							>
 								@for(option of field.options; track $index) {
 								<option [value]="option">{{ option }}</option>
 								}
 							</select>
 						</div>
 						} @else if(field.type !== 'textarea') {
-						<input class="input" [type]="field.type" [id]="field.name" [formControlName]="field.name"
-							[placeholder]="field.placeholder" />
+						<input
+							class="input"
+							[type]="field.type"
+							[id]="field.name"
+							[formControlName]="field.name"
+							[placeholder]="field.placeholder"
+						/>
 						} @else {
-						<textarea class="textarea" [id]="field.name" [formControlName]="field.name"
-							[placeholder]="field.placeholder"></textarea>
+						<textarea
+							class="textarea"
+							[id]="field.name"
+							[formControlName]="field.name"
+							[placeholder]="field.placeholder"
+						></textarea>
 						}
 					</div>
-					@if (form.get(field.name)?.invalid && form.get(field.name)?.touched) {
+					@if (form.get(field.name)?.invalid &&
+					form.get(field.name)?.touched) {
 					<p class="help is-danger">
 						@if(form.get(field.name)?.hasError('required')) {
-						{{ field.label }} is required.
-						} @else if(form.get(field.name)?.hasError('pattern')) {
-						Please enter a valid {{ field.label }}.
-						} @else if(form.get(field.name)?.hasError('minLength')) {
-						Minimum length is {{ field.minLength }}.
-						} @else if(form.get(field.name)?.hasError('maxLength')) {
-						Maximum length is {{ field.maxLength }}.
-						}
+						{{ field.label }} is required. } @else
+						if(form.get(field.name)?.hasError('pattern')) { Please
+						enter a valid {{ field.label }}. } @else
+						if(form.get(field.name)?.hasError('minLength')) {
+						Minimum length is {{ field.minLength }}. } @else
+						if(form.get(field.name)?.hasError('maxLength')) {
+						Maximum length is {{ field.maxLength }}. }
 					</p>
 					}
 				</div>
 				}
 				<div class="buttons">
 					<!-- Bulma's buttons container -->
-					<button type="submit" class="button is-primary" [disabled]="form.invalid">
+					<button
+						type="submit"
+						class="button is-primary"
+						[disabled]="form.invalid"
+					>
 						Submit
 					</button>
-					<button type="button" class="button is-danger" (click)="close()">
+					<button
+						type="button"
+						class="button is-danger"
+						(click)="close()"
+					>
 						Cancel
 					</button>
 				</div>

@@ -1,6 +1,6 @@
-// translation.service.ts
+// TODO: you need to install a karma server to test this service and only use chrome browser to test it  because this doesnt work on firefox
+
 import { Injectable } from '@angular/core';
-import { createObject } from 'rxjs/internal/util/createObject';
 
 @Injectable({
 	providedIn: 'root',
@@ -9,14 +9,13 @@ export class TranslationService {
 	constructor() {}
 
 	translate(unreadableText: string): string {
-		// Example translation function
-		// This could be replaced with actual translation logic or API calls
 		const translationMap: { [key: string]: string } = {
-			unreadable1: 'Hello',
-			unreadable2: 'World',
-			// Add more mappings as needed
+			unreadable1: 'Bonjour',
+			unreadable2: 'Monde',
+			hello: 'Bonjour',
+			world: 'Monde',
 		};
 
-		return translationMap[unreadableText] || 'Translation not found';
+		return translationMap[unreadableText] || 'Traduction non trouvée';
 	}
 }
