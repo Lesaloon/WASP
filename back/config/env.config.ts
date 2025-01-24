@@ -7,13 +7,7 @@ export default class EnvConfig {
 
     private constructor() {
         this.env = process.env.NODE_ENV || 'local';
-        console.log(`Loading environment configuration for ${this.env}`);
         dotenv.config();
-        dotenv.config({
-            // using the NODE_ENV value to determine the path of the .env file
-            path: `.env.${this.env}`
-        });
-
     }
 
     public static getInstance(): EnvConfig {

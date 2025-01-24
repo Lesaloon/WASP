@@ -1,0 +1,113 @@
+services:
+
+  # cloudflared:
+  #   image: cloudflare/cloudflared:latest
+  #   command: tunnel --no-autoupdate run
+  #   restart: unless-stopped
+  #   environment:
+  #     TUNNEL_TOKEN_FILE: /run/secrets/tunnel_token
+  #   secrets:
+  #     - tunnel_token
+  #   security_opt:
+  #    - no-new-privileges:true
+  #   depends_on:
+  #     api:
+  #       condition: service_healthy
+  #     web:
+  #       condition: service_healthy
+  #   read_only: true
+
+
+  web:
+    build:
+      context: ./front
+      args:
+        - NODE_ENV=production
+    restart: unless-stopped
+    networks:
+      - frontfacing-network
+    ports:
+      - "80:80"
+    volumes:
+      - ./front:/app
+    deploy:
+      update_config:
+        order: start-first
+    depends_on:
+      api:
+        condition: service_healthy
+
+
+  api:
+    build:
+      context: ./back
+      args:
+        - NODE_ENV=production
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./back:/app
+    environment:
+      DATABASE_PASSWORD_FILE: /run/secrets/db_password
+    secrets:
+      - db_password
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - frontfacing-network
+      - postgres-network
+
+
+
+  db:
+    image: postgres:17
+    restart: unless-stopped
+    hostname: db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+      POSTGRES_DB: postgres
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    secrets:
+      - db_password
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - postgres-network
+
+  adminer:
+    image: adminer
+    restart: always
+    networks:
+      - frontfacing-network
+      - postgres-network
+    ports:
+      - 8080:8080
+volumes:
+  db_data: # PostgreSQL data
+
+secrets:
+  db_password:
+    file: ./secrets/db_password.txt
+  tunnel_token:
+    file: ./secrets/tunnel_token.txt
+
+
+networks:
+  postgres-network:
+    driver: bridge
+  frontfacing-network:
+    driver: bridge

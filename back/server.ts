@@ -52,3 +52,8 @@ sequelize
   })  .catch((err) => {
     logger.fatal("Database connection failed", err);
   });
+
+// register health
+app.get("/health", (req, res) => {
+	res.send("OK");
+});
