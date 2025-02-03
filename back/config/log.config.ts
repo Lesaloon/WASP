@@ -1,6 +1,5 @@
 import * as Log4js from "log4js";
 import { join } from "path";
-
 const logConfig = {
   appenders: {
 	console: {
@@ -8,7 +7,7 @@ const logConfig = {
 	},
 	file: {
 	  type: "file",
-	  filename: join(__dirname, "../../logs/log-server.log"),
+	  filename: join(process.cwd(), "logs", "log.log"),
 	  maxLogSize: 10485760, // 10MB
 	  backups: 3, // 3 backups locate
 	},
