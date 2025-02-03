@@ -4,7 +4,7 @@
   "main": "server.ts",
   "scripts": {
     "dev": "nodemon server.ts --env=local",
-    "start": "node server.ts --env=local",
+    "start": "ts-node server.ts --env=local",
     "build": "tsc",
     "sequelize": "sequelize-cli",
     "db:migrate": "npx sequelize db:migrate",

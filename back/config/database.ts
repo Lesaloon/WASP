@@ -43,3 +43,4 @@ if (databaseUrl) {
 }
 
 export { sequelize };
+
