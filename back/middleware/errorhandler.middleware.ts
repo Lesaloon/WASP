@@ -5,23 +5,26 @@ const logger = new Log().getLogger();
 
 
 const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
+	logger.error(err);
 	if (typeof (err) === 'string') {
 		// custom application error
-		logger.error(err);
 		res.json(ErrorFactory.internalServerError(err));
+		next();
+		return;
 	}
 
 	if (err.name === 'UnauthorizedError') {
 		// jwt authentication error
-		logger.error(err);
 		res.json(ErrorFactory.unauthorized(err.message));
+		next();
+		return;
 	}
 
 	// default to 500 server error
-	logger.error(err);
 	res.json(ErrorFactory.internalServerError(err.message));
+	next();
+	return;
 	
-	// stop the request from going to the next middleware
 }
 
 export default errorHandler
