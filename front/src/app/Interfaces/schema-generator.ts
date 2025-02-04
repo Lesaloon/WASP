@@ -132,7 +132,6 @@ const schemas: Record<SchemaType, object> = {
 };
 
 export function getSchema(type: SchemaType): Schema {
-  console.log(type);
   let schema = schemas[type] as Schema;
   let og = schema;
 

@@ -40,7 +40,6 @@ export class AuthController {
 	};
 
 	static register: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
-		console.log("register");
 		const { email, password, firstName, lastName } = req.body;
 		// check if the user already exists
 		const user = await User.findOne({
@@ -56,7 +55,6 @@ export class AuthController {
 
 		try {
 			const newUser = new User({ email, password, firstName, lastName, role: "user" });
-			console.log(newUser);
 			await newUser.save();
 			const userWithoutPassword = newUser.dataValues as any;
 			userWithoutPassword.password = undefined;

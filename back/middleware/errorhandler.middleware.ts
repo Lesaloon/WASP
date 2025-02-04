@@ -1,27 +1,27 @@
 import Log from '../config/log.config';
 import { Request, Response, NextFunction } from 'express';
-
+import {ErrorFactory} from '../errors/error.factory';
 const logger = new Log().getLogger();
 
-interface CustomError extends Error {
-	message: string;
-}
 
-const errorHandler = (err: Error | CustomError, _req: Request, res: Response, _next: NextFunction) => {
+const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
 	if (typeof (err) === 'string') {
 		// custom application error
 		logger.error(err);
-		return res.status(200).json({ message: err });
+		res.json(ErrorFactory.internalServerError(err));
 	}
 
 	if (err.name === 'UnauthorizedError') {
 		// jwt authentication error
-		return res.status(200).json({ message: 'Invalid Token' });
+		logger.error(err);
+		res.json(ErrorFactory.unauthorized(err.message));
 	}
 
 	// default to 500 server error
 	logger.error(err);
-	return res.status(200).json(err);
+	res.json(ErrorFactory.internalServerError(err.message));
+	
+	// stop the request from going to the next middleware
 }
 
-export default errorHandler;
+export default errorHandler

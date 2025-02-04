@@ -28,8 +28,6 @@ import { LoggedRequest } from './responseWrapper.middleware';
  */
 export const checkRole = (requiredRole: string[]) => {
   return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    console.log('checkRole', requiredRole);
-    console.log('user', (req as LoggedRequest).user);
     const user = await User.findByPk((req as LoggedRequest).user?.id);
     if (!user) {
       res.status(403).json({ message: 'Access denied. Must be logged in with a valid user' });

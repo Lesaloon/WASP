@@ -29,12 +29,12 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(responseWrapper);
 app.use(jwtMiddleware);
-// app.use(errorHandler);
 app.use("/api/weapon", weaponRoutes);
 app.use("/api/accessory", accessoryRoutes);
 app.use("/api/magazine", magazineRoutes);
 app.use("/api/part", partRoutes);
 app.use("/api/auth", authRoutes);
+app.use(errorHandler);
 
 logger.info("Connecting to the database...");
 sequelize

@@ -8,13 +8,11 @@ dotenv.config();
 function getTokenFromQueryOrHeader(req: any): string | undefined {
   // Check if the route is in the list where token can be in the query
   const queryTokenRoutes: Array<String> = [];
-  console.log(req.path);
   // if part of url is in queryTokenRoutes and token is in query string
   if (
     queryTokenRoutes.some((route) => req.path.includes(route)) &&
     req.query.token
   ) {
-    console.log("Token from query string");
     return req.query.token; // Use token from query string
     // Return undefined if no token is found
     return undefined;
@@ -33,6 +31,7 @@ export const jwtMiddleware = expressjwt({
   algorithms: ["HS256"],
   requestProperty: "user",
   credentialsRequired: true,
+
   //getToken: getTokenFromQueryOrHeader, // Use custom token retrieval function
 }).unless({
   path: ["/api/auth/login", "/api/auth/register"], // Define paths to bypass authentication

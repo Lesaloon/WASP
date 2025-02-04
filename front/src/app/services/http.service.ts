@@ -18,9 +18,7 @@ export class HttpService {
         if (apiResponse.success) {
           return apiResponse.payload;
         } else {
-          console.error(apiResponse.message);
-          console.error(apiResponse.errors);
-          return [];
+          return this.handleError(response)
         }
       })
     );
@@ -33,9 +31,7 @@ export class HttpService {
         if (apiResponse.success) {
           return apiResponse.payload;
         } else {
-          console.error(apiResponse.message);
-          console.error(apiResponse.errors);
-          return [];
+          return this.handleError(response)
         }
       })
     );
@@ -48,9 +44,7 @@ export class HttpService {
         if (apiResponse.success) {
           return apiResponse.payload;
         } else {
-          console.error(apiResponse.message);
-          console.error(apiResponse.errors);
-          return [];
+          return this.handleError(response)
         }
       })
     );
@@ -63,11 +57,18 @@ export class HttpService {
         if (apiResponse.success) {
           return apiResponse.payload;
         } else {
-          console.error(apiResponse.message);
-          console.error(apiResponse.errors);
-          return [];
+          return this.handleError(response)
         }
       })
     );
+  }
+
+  handleError(error: any) {
+    console.error(error.message);
+    console.error(error.errors);
+    if (error.payload.message== "Invalid Token") {
+      console.error("Redirect to login");
+    }
+    return [];
   }
 }

@@ -32,7 +32,6 @@ export class TableComponent<T extends Item> implements OnInit {
   ngOnInit(): void {
     this.schema = getSchema(this.type as SchemaType);
     this.loading = false;
-    console.log(this.schema);
   }
 
   addData() {
