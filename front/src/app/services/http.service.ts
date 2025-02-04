@@ -2,12 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { ApiResponse } from '../interfaces/api-responce.interface';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HttpService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authservice:AuthService) {}
 
   static URL = 'http://localhost:3000/api/';
 
@@ -63,11 +64,10 @@ export class HttpService {
     );
   }
 
-  handleError(error: any) {
-    console.error(error.message);
-    console.error(error.errors);
-    if (error.payload.message== "Invalid Token") {
-      console.error("Redirect to login");
+  handleError(data: any) {
+    console.error(data);
+    if (data.error.name == "InvalidTokenError" || data.error.name == "TokenExpiredError") {
+      this.authservice.logout();
     }
     return [];
   }
