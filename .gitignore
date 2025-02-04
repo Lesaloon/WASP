@@ -1,2 +1,7 @@
 logs/
 .DS_Store
+.env
+db/
+
+/secrets/*
+!/secrets/.gitkeep

@@ -1,53 +1,57 @@
-<div class="container is-flex is-align-items-center is-flex-direction-column">
-	<h2 class="title is-2 has-text-centered">Connexion</h2>
-	<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="box">
-		<div class="field">
-			<label class="label" for="email">Adresse e-mail</label>
-			<div class="control">
-				<input
-					id="email"
-					formControlName="email"
-					type="email"
-					class="input"
-				/>
-			</div>
-			@if(loginForm.get('email')?.invalid &&
-			(loginForm.get('email')?.dirty || loginForm.get('email')?.touched))
-			{
-			<div class="help is-danger">
-				@if(loginForm.get('email')?.errors?.['required']) { L'adresse
-				e-mail est requise. }
-				@if(loginForm.get('email')?.errors?.['email']) { L'adresse
-				e-mail est invalide. }
-			</div>
-			}
-		</div>
-		<div class="field">
-			<label class="label" for="password">Mot de passe</label>
-			<div class="control">
-				<input
-					id="password"
-					formControlName="password"
-					type="password"
-					class="input"
-				/>
-			</div>
-			@if(loginForm.get('password')?.invalid ||
-			(loginForm.get('password')?.errors?.['required'])) {
-			<div class="help is-danger">Le mot de passe est requis.</div>
-			} @if(loginForm.get('password')?.errors?.['minlength']) {
-			<div class="help is-danger">
-				Le mot de passe doit comporter au moins 6 caractères.
-			</div>
-			}
-		</div>
+<div class="columns is-centered is-vcentered is-fullheight">
+	<div class="column">
+		<div class="box">
+			<h2 class="title has-text-white has-text-centered">Connexion</h2>
+			<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+				<!-- Email Field -->
+				<div class="field">
+					<label for="email" class="label has-text-white">Adresse e-mail</label>
+					<div class="control">
+						<input id="email" formControlName="email" type="email" class="input"
+							placeholder="Entrez votre adresse e-mail" />
+					</div>
+					@if (loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty ||
+					loginForm.get('email')?.touched)) {
+					<div class="help is-danger">
+						@if (loginForm.get('email')?.errors?.['required']) {
+						<span>L'adresse e-mail est requise.</span>
+						}
+						@if (loginForm.get('email')?.errors?.['email']) {
+						<span>L'adresse e-mail est invalide.</span>
+						}
+					</div>
+					}
+				</div>
 
-		<button
-			type="submit"
-			class="button is-link"
-			[disabled]="loginForm.invalid"
-		>
-			Se connecter
-		</button>
-	</form>
-</div>
+				<!-- Password Field -->
+				<div class="field">
+					<label for="password" class="label has-text-white">Mot de passe</label>
+					<div class="control">
+						<input id="password" formControlName="password" type="password" class="input"
+							placeholder="Entrez votre mot de passe" />
+					</div>
+					@if (loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty ||
+					loginForm.get('password')?.touched)) {
+					<div class="help is-danger">
+						@if (loginForm.get('password')?.errors?.['required']) {
+						<span>Le mot de passe est requis.</span>
+						}
+						@if (loginForm.get('password')?.errors?.['minlength']) {
+						<span>Le mot de passe doit comporter au moins 6 caractères.</span>
+						}
+					</div>
+					}
+				</div>
+
+				<!-- Submit Button -->
+				<div class="field">
+					<div class="control">
+						<button type="submit" class="button is-primary is-fullwidth" [disabled]="loginForm.invalid">
+							Se connecter
+						</button>
+					</div>
+				</div>
+			</form>
+		</div><!-- .box -->
+	</div><!-- .column -->
+</div><!-- .columns -->

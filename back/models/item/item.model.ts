@@ -1,5 +1,5 @@
 import { DataTypes, Model } from "sequelize";
-import { sequelize } from "../../database";
+import { sequelize } from "../../config/database";
 import { Status } from "./status.enum";
 import { Condition } from "./condition.enum";
 

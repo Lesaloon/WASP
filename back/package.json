@@ -3,14 +3,23 @@
   "version": "1.0.0",
   "main": "server.ts",
   "scripts": {
-    "dev": "nodemon server.ts"
+    "dev": "nodemon server.ts --env=local",
+    "start": "ts-node server.ts --env=local",
+    "build": "tsc",
+    "sequelize": "sequelize-cli",
+    "db:migrate": "npx sequelize db:migrate",
+    "db:migrate:undo": "npx sequelize db:migrate:undo",
+    "db:seed:all": "npx sequelize db:seed:all",
+    "db:seed:undo:all": "npx sequelize db:seed:undo:all",
+    "migrate": "npm run db:migrate",
+    "seed": "npm run db:seed:all"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
     "@sequelize/core": "^7.0.0-alpha.43",
-    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
@@ -19,16 +28,20 @@
     "jsonwebtoken": "^9.0.2",
     "log4js": "^6.9.1",
     "mysql2": "^3.11.5",
+    "pg": "^8.13.1",
     "sequelize": "^6.37.5",
     "tedious": "^18.6.1"
   },
   "devDependencies": {
-    "@types/bcrypt": "^5.0.2",
+    "@types/bcryptjs": "^2.4.6",
     "@types/body-parser": "^1.19.5",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
-    "nodemon": "^3.1.7",
     "@types/jsonwebtoken": "^9.0.7",
-    "ts-node": "^10.9.2"
+    "@types/node": "^22.13.0",
+    "nodemon": "^3.1.7",
+    "sequelize-cli": "^6.6.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
   }
 }

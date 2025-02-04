@@ -1,5 +1,5 @@
 import { DataTypes } from "sequelize";
-import { sequelize } from "../../database";
+import { sequelize } from "../../config/database";
 import { Item, itemAttributes } from "../item/item.model";
 
 export class Weapon extends Item {}

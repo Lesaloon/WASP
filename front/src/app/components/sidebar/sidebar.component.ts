@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
+
 @Component({
 	selector: 'sidebar',
 	standalone: true,
@@ -7,17 +8,11 @@ import { AuthService } from '../../services/auth.service';
 	templateUrl: './sidebar.component.html',
 	styleUrl: './sidebar.component.css',
 })
-export class SidebarComponent implements OnInit {
-	isLoggedIn: boolean = false;
-	isSidebarOpen: boolean = false;
+export class SidebarComponent {
 
-	constructor(private authService: AuthService) {}
+  constructor(private Auth: AuthService) {}
 
-	ngOnInit(): void {
-		this.isLoggedIn = this.authService.isLoggedIn();
-	}
-
-	toggleSidebar(): void {
-		this.isSidebarOpen = !this.isSidebarOpen;
-	}
+  check() {
+    return this.Auth.isLoggedIn();
+  }
 }
