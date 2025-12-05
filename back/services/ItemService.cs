@@ -595,7 +595,7 @@ CreatedAtUtc = accessory.CreatedAtUtc ?? DateTime.UtcNow,
                         Notes = item.Notes,
                         WarrantyInfo = item.WarrantyInfo,
                         TrackingCode = item.TrackingCode,
-                        Type = item.Type,
+                        
                         TagIds = item.ItemTags.Select(t => t.TagId).ToList(),
                         CreatedAtUtc = item.CreatedAtUtc ?? DateTime.UtcNow,
                         UpdatedAtUtc = item.UpdatedAtUtc ?? DateTime.UtcNow
