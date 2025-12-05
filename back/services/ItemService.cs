@@ -458,7 +458,7 @@ namespace Wasp.Backend.Services
                 TrackingCode = accessory.TrackingCode,
                 
                 Platform = Enum.Parse<PlatformType>(accessory.Platform ?? "AR15"),
-                AccessoryType = accessory.AccessoryType.ToString(),
+                AccessoryType = accessory.AccessoryType,
                 TagIds = accessory.ItemTags.Select(t => t.TagId).ToList(),
                 Weapons = accessory.Weapons.Select(wa => new WeaponAccessoryDto
                 {

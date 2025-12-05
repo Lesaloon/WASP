@@ -46,7 +46,7 @@ namespace Wasp.Backend.DTOs
     public class AccessoryDto : ItemBaseDto
     {
         public PlatformType Platform { get; set; }
-        public ItemType AccessoryType { get; set; }
+        public AccessoryType AccessoryType { get; set; }
         public List<WeaponAccessoryDto> Weapons { get; set; } = new List<WeaponAccessoryDto>();
     }
 
