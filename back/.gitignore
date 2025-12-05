@@ -1,8 +1,145 @@
-/node_modules
-/.env
-/.env.local
-/.env.dev
-/.env.prod
+# Build results
+/[Dd]ebug/
+/[Dd]ebugPublic/
+/[Rr]elease/
+/[Rr]eleases/
+x64/
+x86/
+[Bb]in/
+[Oo]bj/
+/[Pp]ublish/
+[Bb]uild/
+artifacts/
+
+# Visual Studio files
+*.sln.docstates
+*.suo
+*.user
+*.userosscache
+*.sln.cache
+*.[Pp]ublish.xml
+*.azurePubxml
+*.pubxml
+*.pubxml.meta
+
+# Visual Studio code analysis
+AnalyzerResults/
+
+# MSTest test Results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+# NUNIT
+*.VisualState.xml
+TestResult.xml
+
+# Build Results of an ATL Project
+[Dd]ebugPS/
+[Rr]eleasePS/
+dlldata.c
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# StyleCop files
+StyleCopReport.xml
+
+# Files built by Visual Studio
+*_i.c
+*_p.c
+*_i.h
+*.ilk
+*.meta
+*.obj
+*.iobj
+*.pch
+*.pdb
+*.ipdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.tmp_proj
+*_wpftmp.csproj
+*.vshost.*
+*.csproj.GenerateResource*.i
+*.resharper
+*.resharper.user
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Mac
 .DS_Store
-/build
-pnpm-lock.yaml
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# SQL Server files
+*.mdf
+*.ldf
+*.ndf
+
+# Business Intelligence projects
+*.rdl.data
+*.bim.layout
+*.dbmdl
+
+# Microsoft Azure Build Output
+csx/
+*.build.csdef
+
+# Microsoft Azure Emulator
+ecf/
+rcf/
+
+# Windows Store app package files
+AppPackages/
+BundleArtifacts/
+Package.StoreAssociation.xml
+_pkginfo.txt
+
+# Visual Studio cache files
+*.[Ee]xpress.[Pp]db
+*.user.ini
+
+# =========================
+# Entity Framework
+# =========================
+**/Migrations/
+
+# =========================
+# NuGet
+# =========================
+*.nupkg
+packages/
+*.nuget.props
+*.nuget.targets
+
+# =========================
+# Docker
+# =========================
+.dockerignore
+Dockerfile*
+
+# =========================
+# Logs
+# =========================
+*.log
+logs/
+*.tmp
+*.temp

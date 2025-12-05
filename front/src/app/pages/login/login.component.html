@@ -1,57 +1,48 @@
-<div class="columns is-centered is-vcentered is-fullheight">
-	<div class="column">
-		<div class="box">
-			<h2 class="title has-text-white has-text-centered">Connexion</h2>
-			<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-				<!-- Email Field -->
-				<div class="field">
-					<label for="email" class="label has-text-white">Adresse e-mail</label>
-					<div class="control">
-						<input id="email" formControlName="email" type="email" class="input"
-							placeholder="Entrez votre adresse e-mail" />
-					</div>
-					@if (loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty ||
-					loginForm.get('email')?.touched)) {
-					<div class="help is-danger">
-						@if (loginForm.get('email')?.errors?.['required']) {
-						<span>L'adresse e-mail est requise.</span>
-						}
-						@if (loginForm.get('email')?.errors?.['email']) {
-						<span>L'adresse e-mail est invalide.</span>
-						}
-					</div>
-					}
-				</div>
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <h2>WASP Login</h2>
+      <p>Weapons and Accessories Support Platform</p>
+    </div>
 
-				<!-- Password Field -->
-				<div class="field">
-					<label for="password" class="label has-text-white">Mot de passe</label>
-					<div class="control">
-						<input id="password" formControlName="password" type="password" class="input"
-							placeholder="Entrez votre mot de passe" />
-					</div>
-					@if (loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty ||
-					loginForm.get('password')?.touched)) {
-					<div class="help is-danger">
-						@if (loginForm.get('password')?.errors?.['required']) {
-						<span>Le mot de passe est requis.</span>
-						}
-						@if (loginForm.get('password')?.errors?.['minlength']) {
-						<span>Le mot de passe doit comporter au moins 6 caractères.</span>
-						}
-					</div>
-					}
-				</div>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input
+          id="username"
+          formControlName="username"
+          type="text"
+          placeholder="Enter your username"
+        >
+        <div *ngIf="username?.invalid && username?.touched" class="error">
+          Username is required
+        </div>
+      </div>
 
-				<!-- Submit Button -->
-				<div class="field">
-					<div class="control">
-						<button type="submit" class="button is-primary is-fullwidth" [disabled]="loginForm.invalid">
-							Se connecter
-						</button>
-					</div>
-				</div>
-			</form>
-		</div><!-- .box -->
-	</div><!-- .column -->
-</div><!-- .columns -->
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          formControlName="password"
+          type="password"
+          placeholder="Enter your password"
+        >
+        <div *ngIf="password?.invalid && password?.touched" class="error">
+          Password is required
+        </div>
+      </div>
+
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+
+      <button
+        type="submit"
+        class="btn-login"
+        [disabled]="loading || loginForm.invalid"
+      >
+        {{ loading ? 'Logging in...' : 'Login' }}
+      </button>
+    </form>
+  </div>
+</div>

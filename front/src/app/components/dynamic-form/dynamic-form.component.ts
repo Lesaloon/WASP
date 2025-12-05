@@ -1,87 +1,97 @@
-import { Component, inject, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { DialogRef } from '@ngneat/dialog';
-import { Item } from '../../interfaces/item.interface';
-import { Schema } from '../../interfaces/schema-generator';
-
-interface Data {
-  schema: any;
-}
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ItemBase, Weapon, Part, Accessory, ItemCondition, ItemStatus, ItemType, PlatformType } from '../../interfaces/item.interface';
 
 @Component({
   selector: 'app-dynamic-form',
-  standalone: true,
-  imports: [ReactiveFormsModule, FormsModule],
   templateUrl: './dynamic-form.component.html',
-  styleUrl: './dynamic-form.component.css',
+  styleUrls: ['./dynamic-form.component.css']
 })
-export class DynamicFormComponent<T extends Item> implements OnInit {
-  defaultValues: any = {};
+export class DynamicFormComponent implements OnInit {
+  @Input() item: ItemBase | null = null;
+  @Input() itemType: ItemType = ItemType.Weapon;
+  @Output() formSubmit = new EventEmitter<ItemBase>();
+  @Output() formCancel = new EventEmitter<void>();
+
   form!: FormGroup;
-  fields: any[] = [];
-  schema!: Schema;
-  ref: DialogRef<Data, string> = inject(DialogRef);
+  itemTypes = Object.values(ItemType);
+  conditions = Object.values(ItemCondition);
+  statuses = Object.values(ItemStatus);
+  platforms = Object.values(PlatformType);
 
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    this.defaultValues = this.ref.data;
     this.buildForm();
+    if (this.item) {
+      this.form.patchValue(this.item);
+    }
   }
 
-  close() {
-    this.ref.close();
-  }
-
-  buildForm() {
-    const formGroup: any = {};
-    this.schema = this.ref.data.schema;
-    this.fields = this.schema.properties.map(({ key, value }) => {
-      const property = value as any;
-      const validators = [];
-
-      if (property.required) {
-        validators.push(Validators.required);
-      }
-
-      if (property.pattern) {
-        validators.push(Validators.pattern(property.pattern));
-      }
-
-      if (property.minLength) {
-        validators.push(Validators.minLength(property.minLength));
-      }
-
-      if (property.maxLength) {
-        validators.push(Validators.maxLength(property.maxLength));
-      }
-
-      formGroup[key] = [this.defaultValues[key] || '', validators];
-
-      return {
-        name: key,
-        label: property.label || key.charAt(0).toUpperCase() + key.slice(1),
-        type: property.enum ? 'select' : property.type,
-        placeholder: `Enter ${property.label || key}`,
-        options: property.enum || [],
-		required: property.required,
-      };
+  buildForm(): void {
+    this.form = this.fb.group({
+      name: ['', Validators.required],
+      manufacturer: [''],
+      dateAcquired: [''],
+      price: [''],
+      condition: [ItemCondition.Unknown],
+      status: [ItemStatus.Active],
+      notes: [''],
+      warrantyInfo: [''],
+      trackingCode: [''],
+      itemType: [this.itemType],
+      tagIds: [[]]
     });
 
-    this.form = this.fb.group(formGroup);
+    // Add type-specific fields based on item type
+    switch (this.itemType) {
+      case ItemType.Weapon:
+        this.form.addControl('platform', this.fb.control(PlatformType.Airsoft, Validators.required));
+        this.form.addControl('category', this.fb.control('', Validators.required));
+        this.form.addControl('subcategory', this.fb.control(''));
+        this.form.addControl('model', this.fb.control('', Validators.required));
+        this.form.addControl('serialNumber', this.fb.control(''));
+        this.form.addControl('caliberOrBbSize', this.fb.control(''));
+        this.form.addControl('actionType', this.fb.control(''));
+        this.form.addControl('countryOfOrigin', this.fb.control(''));
+        this.form.addControl('parts', this.fb.control([]));
+        this.form.addControl('accessories', this.fb.control([]));
+        break;
+
+      case ItemType.Part:
+        this.form.addControl('platform', this.fb.control(PlatformType.Airsoft, Validators.required));
+        this.form.addControl('partType', this.fb.control('', Validators.required));
+        this.form.addControl('compatibleModelsRaw', this.fb.control(''));
+        this.form.addControl('weapons', this.fb.control([]));
+        break;
+
+      case ItemType.Accessory:
+        this.form.addControl('platform', this.fb.control(PlatformType.Airsoft, Validators.required));
+        this.form.addControl('accessoryType', this.fb.control('', Validators.required));
+        this.form.addControl('weapons', this.fb.control([]));
+        break;
+    }
   }
 
-  onSubmit() {
+  onSubmit(): void {
     if (this.form.valid) {
-      console.log('Form Submitted:', this.form.value);
-    } else {
-      console.error('Form is invalid!');
+      this.formSubmit.emit(this.form.value);
     }
+  }
+
+  onCancel(): void {
+    this.formCancel.emit();
+  }
+
+  get isWeapon(): boolean {
+    return this.itemType === ItemType.Weapon;
+  }
+
+  get isPart(): boolean {
+    return this.itemType === ItemType.Part;
+  }
+
+  get isAccessory(): boolean {
+    return this.itemType === ItemType.Accessory;
   }
 }

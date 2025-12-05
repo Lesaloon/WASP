@@ -5,3 +5,6 @@ db/
 
 /secrets/*
 !/secrets/.gitkeep
+
+
+.vs

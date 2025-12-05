@@ -1,74 +1,37 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
-import { ApiResponse } from '../interfaces/api-responce.interface';
+import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class HttpService {
-  constructor(private http: HttpClient, private authservice:AuthService) {}
+  private baseUrl = 'http://localhost:5000/api';
 
-  static URL = 'http://localhost:3000/api/';
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
-  get<T>(url: string): Observable<T | T[]> {
-    return this.http.get(HttpService.URL + url).pipe(
-      map((response: Object) => {
-        const apiResponse = response as ApiResponse<T>;
-        if (apiResponse.success) {
-          return apiResponse.payload;
-        } else {
-          return this.handleError(response)
-        }
-      })
-    );
+  private getAuthHeaders(): HttpHeaders {
+    const token = this.authService.getToken();
+    return new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
   }
 
-  post<T>(url: string, data: any): Observable<T | T[]> {
-    return this.http.post(HttpService.URL + url, data).pipe(
-      map((response: Object) => {
-        const apiResponse = response as ApiResponse<T>;
-        if (apiResponse.success) {
-          return apiResponse.payload;
-        } else {
-          return this.handleError(response)
-        }
-      })
-    );
+  get<T>(url: string): Observable<T> {
+    return this.http.get<T>(`${this.baseUrl}/${url}`, { headers: this.getAuthHeaders() });
   }
 
-  put<T>(url: string, data: any): Observable<T | T[]> {
-    return this.http.put(HttpService.URL + url, data).pipe(
-      map((response: Object) => {
-        const apiResponse = response as ApiResponse<T>;
-        if (apiResponse.success) {
-          return apiResponse.payload;
-        } else {
-          return this.handleError(response)
-        }
-      })
-    );
+  post<T>(url: string, data: any): Observable<T> {
+    return this.http.post<T>(`${this.baseUrl}/${url}`, data, { headers: this.getAuthHeaders() });
   }
 
-  delete<T>(url: string): Observable<T | T[]> {
-    return this.http.delete(HttpService.URL + url).pipe(
-      map((response: Object) => {
-        const apiResponse = response as ApiResponse<T>;
-        if (apiResponse.success) {
-          return apiResponse.payload;
-        } else {
-          return this.handleError(response)
-        }
-      })
-    );
+  put<T>(url: string, data: any): Observable<T> {
+    return this.http.put<T>(`${this.baseUrl}/${url}`, data, { headers: this.getAuthHeaders() });
   }
 
-  handleError(data: any) {
-    console.error(data);
-    if (data.error.name == "InvalidTokenError" || data.error.name == "TokenExpiredError") {
-      this.authservice.logout();
-    }
-    return [];
+  delete<T>(url: string): Observable<T> {
+    return this.http.delete<T>(`${this.baseUrl}/${url}`, { headers: this.getAuthHeaders() });
   }
 }

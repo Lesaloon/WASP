@@ -1,121 +1,221 @@
-# WASP
-Weapons and Accessories Support Platform
+# WASP - Weapons and Accessories Support Platform
 
-1. Database Design
+A comprehensive inventory management system for weapons, parts, and accessories with maintenance tracking and audit capabilities.
 
-The system will use an MS SQL database to manage the inventory effectively.
-Tables and Fields
+## 🏗️ Architecture Overview
 
-    Item Table (Abstract)
-        ID (Primary Key)
-        Name
-        Manufacturer
-        Date Acquired
-        Price
-        Condition (New, Used, Refurbished)
-        Status (In Use, Retired, Under Maintenance)
-        Notes
-        Warranty
-        Tracking Code (Unique)
+### Backend - .NET 8 Web API
+- **Technology**: C# / .NET 8 / ASP.NET Core
+- **Database**: PostgreSQL with UUID primary keys
+- **ORM**: Entity Framework Core 8 with TPH (Table Per Hierarchy)
+- **Authentication**: JWT with role-based authorization
+- **API**: RESTful endpoints with OpenAPI/Swagger documentation
 
-    Weapons Table (Inherits from Item)
-        Category (e.g., Rifle, Pistol, Shotgun)
-        Subcategory (e.g., Bolt-action, Semi-auto, Pump-action)
-        Model
-        Serial Number
-        Caliber/Gauge
-        Action Type (e.g., Semi-auto, Bolt-action)
-        Country of Origin
+### Frontend - Angular (Separate Project)
+- **Technology**: Angular (in `/front` directory)
+- **Framework**: Angular CLI with TypeScript
+- **Styling**: CSS with responsive design
+- **State Management**: Services and RxJS
 
-    Parts Table (Inherits from Item)
-        Associated Weapon(s) (Foreign Key)
-        Type (e.g., Barrel, Trigger Assembly, Bolt Carrier)
-        Compatible Models
+## 🎯 Features
 
-    Accessories Table (Inherits from Item)
-        Type (e.g., Holster, Optic, Light, Laser)
-        Associated Weapon(s) (Foreign Key)
+### Core Inventory Management
+- **Weapons**: Airsoft, Real Steel, Training Replicas
+- **Parts**: Components with compatibility tracking
+- **Accessories**: Mountable attachments
+- **Flexible Tagging**: Custom categorization system
+- **Unique Tracking**: Auto-generated tracking codes
 
-    Maintenance Table
-        ID (Primary Key)
-        Item ID (Foreign Key)
-        Item Type (Weapon, Part, Accessory)
-        Issue Description
-        Priority Level (Low, Medium, High)
-        Date Logged
-        Assigned Technician
-        Resolution Steps
-        Status (Pending, In Progress, Resolved)
-        Date Resolved
+### Advanced Relationships
+- **Weapon-Part Links**: Track installed and spare parts
+- **Weapon-Accessory Links**: Manage mounted accessories
+- **Compatibility**: Part and accessory compatibility with weapon models
+- **Platform Support**: Multi-platform support (Airsoft, Real Steel, Training)
 
-    Logs Table
-        ID (Primary Key)
-        Item ID (Foreign Key)
-        Item Type (Weapon, Part, Accessory)
-        Action (Added, Updated, Retired, Maintenance Logged)
-        User Responsible
-        Date
+### Maintenance & Audit
+- **Maintenance Logs**: Issue tracking and resolution history
+- **Priority System**: Low, Medium, High, Critical priorities
+- **Status Tracking**: Pending, In Progress, Resolved
+- **Activity Logs**: Complete audit trail of all changes
+- **Assignment**: Assign maintenance to specific technicians
 
-2. Features and Functionalities
-Inventory Management
+### Security & Access Control
+- **Role-Based Access**: Admin, Technician, Viewer roles
+- **JWT Authentication**: Secure token-based authentication
+- **Authorization**: Fine-grained permission control
 
-    Add, edit, and remove items (Weapons, Parts, Accessories).
-    Search and filter by attributes such as name, category, manufacturer, and condition.
-    Link related parts and accessories to weapons.
-    Display compatibility for parts and accessories.
+## 📁 Project Structure
 
-Maintenance Tracking
+```
+wasp/
+├── back/                          # .NET 8 Backend
+│   ├── Controllers/              # API Controllers
+│   ├── Services/                 # Business Logic
+│   ├── Models/                   # Entity Models
+│   ├── DTOs/                     # Data Transfer Objects
+│   ├── Enums/                    # Domain Enums
+│   ├── Data/                     # Database Context
+│   └── appsettings.json          # Configuration
+├── front/                        # Angular Frontend
+│   ├── src/app/                  # Angular Application
+│   ├── angular.json              # Angular Configuration
+│   └── package.json              # Dependencies
+├── docker-compose.yml            # Docker Configuration
+└── README.md                     # This file
+```
 
-    Document issues for items (e.g., wear, malfunctions).
-    Assign priority levels to issues.
-    Track repair and maintenance history.
-    Generate reminders for routine maintenance schedules.
+## 🚀 Quick Start
 
-Reporting and Analytics
+### Prerequisites
+- .NET 8 SDK
+- Node.js 18+ (for frontend)
+- PostgreSQL database
+- Docker (optional, for containerized deployment)
 
-    Generate reports for inventory status (e.g., active vs retired, condition).
-    Cost tracking and depreciation reports.
-    Maintenance trends and frequent issues.
-    Usage reports (e.g., which weapons/accessories are used most frequently).
+### Backend Setup
+1. Navigate to backend directory:
+   ```bash
+   cd back
+   ```
 
-User Access and Roles
+2. Configure database connection in `appsettings.json`:
+   ```json
+   {
+     "ConnectionStrings": {
+       "DefaultConnection": "Host=localhost;Database=wasp;Username=postgres;Password=yourpassword"
+     }
+   }
+   ```
 
-    Admin: Full access to add/edit/remove data and manage users.
-    Technician: Access to maintenance logs and tools.
-    Viewer: Read-only access for browsing inventory.
+3. Run database migrations:
+   ```bash
+   dotnet ef database update
+   ```
 
-Integration and API
+4. Start the backend:
+   ```bash
+   dotnet run
+   ```
 
-    Integrate with existing asset management systems.
-    API endpoints for external applications or mobile apps to retrieve or update inventory data.
+### Frontend Setup
+1. Navigate to frontend directory:
+   ```bash
+   cd front
+   ```
 
-3. User Interface
-Dashboard
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-    Overview of inventory, flagged issues, and recent activities.
-    Quick access to search, add new items, and generate reports.
+3. Start development server:
+   ```bash
+   npm start
+   ```
 
-Item Details View
+### Docker Deployment
+```bash
+docker-compose up -d
+```
 
-    Comprehensive details about individual items.
-    Tabs for associated parts, accessories, and maintenance logs.
+## 🔧 API Endpoints
 
-Search and Filter
+### Items Management
+- `GET /api/items` - List items with filtering
+- `POST /api/items` - Create new item
+- `PUT /api/items/{id}` - Update item
+- `DELETE /api/items/{id}` - Delete item
 
-    Advanced filtering by multiple attributes (e.g., by category, condition, price range).
-    Search bar with suggestions and dynamic results.
+### Weapons
+- `GET /api/weapons` - List weapons
+- `POST /api/weapons` - Create weapon
+- `PUT /api/weapons/{id}` - Update weapon
 
-Maintenance Module
+### Parts & Accessories
+- `GET /api/parts` - List parts
+- `GET /api/accessories` - List accessories
+- `POST /api/weapons/{id}/parts/{partId}` - Link part to weapon
+- `POST /api/weapons/{id}/accessories/{accessoryId}` - Mount accessory
 
-    Dedicated section for logging and resolving issues.
-    Notifications for pending and overdue maintenance.
+### Maintenance
+- `GET /api/maintenance` - List maintenance logs
+- `POST /api/maintenance` - Create maintenance log
+- `PUT /api/maintenance/{id}` - Update maintenance status
 
-4. Scalability and Security
-Scalability
+### Tags & Activity
+- `GET /api/tags` - List all tags
+- `GET /api/items/{id}/activity` - Get item activity history
 
-    Cloud-based storage for handling large inventories.
-    Modular design for easy addition of new item types or categories.
+## 📊 Database Schema
 
-Security
+The system uses a sophisticated TPH (Table Per Hierarchy) approach:
 
-    Role-based access control.
+- **Items Table**: Single table with discriminator for Weapon/Part/Accessory
+- **UUID Primary Keys**: Globally unique identifiers
+- **Relationship Tables**: Many-to-many for weapon-part and weapon-accessory links
+- **Audit Trail**: Complete activity logging
+- **Flexible Tagging**: Many-to-many tag system
+
+## 🛡️ Security
+
+- **JWT Authentication**: Secure token-based auth
+- **Role-Based Authorization**: Admin, Technician, Viewer roles
+- **Input Validation**: Comprehensive validation and sanitization
+- **HTTPS**: Production-ready security configuration
+
+## 🐳 Docker Support
+
+The project includes Docker configuration for easy deployment:
+
+```yaml
+# docker-compose.yml
+services:
+  backend:
+    build: ./back
+    ports:
+      - "5000:80"
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=db;Database=wasp;Username=postgres;Password=password
+  
+  frontend:
+    build: ./front
+    ports:
+      - "3000:80"
+  
+  db:
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=wasp
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+```
+
+## 📈 Monitoring & Logging
+
+- **Structured Logging**: Comprehensive logging throughout the application
+- **Health Checks**: Built-in health check endpoints
+- **Performance Monitoring**: Optimized for high-performance scenarios
+- **Error Handling**: Graceful error handling and reporting
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests for your changes
+5. Submit a pull request
+
+## 📄 License
+
+MIT License - see LICENSE file for details
+
+## 🆘 Support
+
+- **API Documentation**: Available at `/swagger` when running in development
+- **Issue Tracking**: GitHub Issues
+- **Documentation**: Project Wiki
+
+---
+
+**WASP** - Weapons and Accessories Support Platform
+Built with ❤️ using .NET 8 and Angular

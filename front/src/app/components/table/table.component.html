@@ -1,27 +1,54 @@
-@if(!loading) {
+<div class="table-container">
+  <div class="table-header">
+    <h3>{{ itemType }} List</h3>
+    <div class="table-actions">
+      <button class="btn-primary">Add {{ itemType }}</button>
+    </div>
+  </div>
 
-<div class="filter">
-	<input type="text" [(ngModel)]="filterText" placeholder="Filter by description" />
-	<button (click)="addData()">Add Data</button>
+  <div *ngIf="loading" class="loading">
+    Loading...
+  </div>
+
+  <div *ngIf="!loading && items.length === 0" class="no-data">
+    No {{ itemType.toLowerCase() }}s found.
+  </div>
+
+  <div *ngIf="!loading && items.length > 0" class="table-wrapper">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th *ngFor="let column of displayedColumns">
+            {{ column | titlecase }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of items">
+          <td *ngFor="let column of displayedColumns">
+            <span *ngIf="column !== 'actions'">
+              {{ formatValue(item, column) }}
+            </span>
+            <div *ngIf="column === 'actions'" class="action-buttons">
+              <button class="btn-view" (click)="onView(item)">View</button>
+              <button class="btn-edit" (click)="onEdit(item)">Edit</button>
+              <button class="btn-delete" (click)="onDelete(item)">Delete</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="!loading && items.length > 0" class="table-footer">
+    <div class="pagination">
+      <button class="btn-pagination" (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1">
+        Previous
+      </button>
+      <span>Page {{ currentPage }}</span>
+      <button class="btn-pagination" (click)="onPageChange(currentPage + 1)">
+        Next
+      </button>
+    </div>
+  </div>
 </div>
-
-<table class="table">
-	<thead>
-		<tr>
-			@for(header of schema.showInTable; track $index) {
-			<th>{{ header.label }}</th>
-			}
-		</tr>
-	</thead>
-	<tbody>
-		@for (item of filteredData; track item) {
-		<tr>
-			@for (field of schema.showInTable; track field) {
-			<td>{{ item[field.key] }}</td>
-			}
-		</tr>
-		}
-	</tbody>
-</table>
-
-}

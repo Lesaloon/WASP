@@ -1,1 +1,26 @@
-<p>all-items works!</p>
+<div class="all-items-container">
+  <div class="page-header">
+    <h1>{{ pageTitle }}</h1>
+    <div class="header-actions">
+      <button class="btn-primary" (click)="onAddItem()">Add {{ itemType }}</button>
+    </div>
+  </div>
+
+  <div class="search-bar">
+    <input 
+      type="text" 
+      placeholder="Search {{ itemType.toLowerCase() }}s..." 
+      (input)="onSearch($any($event).target.value)"
+    >
+  </div>
+
+  <app-table
+    [items]="items"
+    [itemType]="itemType"
+    [loading]="loading"
+    (viewItem)="onViewItem($event)"
+    (editItem)="onEditItem($event)"
+    (deleteItem)="onDeleteItem($event)"
+    (pageChange)="onPageChange($event)"
+  ></app-table>
+</div>

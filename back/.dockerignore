@@ -1,4 +1,38 @@
-node_modules
-dist
+# Build output
+bin/
+obj/
+
+# Development files
+.vscode/
+.vs/
+*.user
+*.userosscache
+*.suo
+*.userprefs
+
+# NuGet packages
+packages/
+
+# Logs
+*.log
+logs/
+
+# Environment variables
 .env
-logs
+*.env
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git
+.gitignore
+
+# Documentation
+README.md
+LICENSE
+
+# Docker
+Dockerfile*
+docker-compose*

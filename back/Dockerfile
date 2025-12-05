@@ -1,33 +1,32 @@
-# Use a lightweight Node.js 20 Alpine base image
-FROM node:20-alpine AS builder
-
-# Set the working directory
+# Build stage
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
-# Install dependencies needed for building
-COPY package.json package-lock.json ./
+# Copy project files
+COPY *.csproj ./
+COPY . .
 
-# ✅ Install all dependencies, including devDependencies
-RUN npm install
+# Restore, build, and publish
+RUN dotnet restore
+RUN dotnet build --configuration Release --no-restore
+RUN dotnet publish --configuration Release --no-restore -o out
 
-# Copy the entire project
-COPY . . 
-
-# ✅ Make sure TypeScript is installed & accessible
-RUN npx tsc
-
-# Use a minimal runtime image
-FROM node:20-alpine
-
+# Runtime stage
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
 
-# Copy only necessary files
-COPY --from=builder /app/package.json /app/package-lock.json ./
-COPY --from=builder /app/node_modules /app/node_modules
-COPY --from=builder /app/dist /app/dist
+# Install curl for health checks
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
+# Copy published app
+COPY --from=build /app/out ./
 
 # Expose port
-EXPOSE 3000
+EXPOSE 80
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost/health || exit 1
 
 # Run the app
-CMD ["node", "dist/server.js"]
+ENTRYPOINT ["dotnet", "Wasp.Backend.dll"]

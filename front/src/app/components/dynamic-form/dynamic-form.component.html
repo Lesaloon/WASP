@@ -1,73 +1,160 @@
-<div class="modal is-active">
-	<!-- Modal container with Bulma's is-active class -->
-	<div class="modal-background"></div>
-	<!-- Background overlay -->
-	<div class="modal-card">
-		<!-- Modal card wrapper -->
-		<header class="modal-card-head">
-			<!-- Modal header section -->
-			<p class="modal-card-title">Ajouter un {{ schema.title }}</p>
-			<!-- Title -->
-			<button class="delete" aria-label="close" (click)="close()"></button>
-			<!-- Close button -->
-		</header>
-		<section class="modal-card-body">
-			<!-- Main content of the modal -->
-			<form [formGroup]="form" (ngSubmit)="onSubmit()">
-				@for(field of fields; track $index) {
-				<div class="field">
-					<!-- Bulma's field wrapper -->
-					<label class="label" [for]="field.name">
-						{{ field.label }}
-						@if(field.required) {
-						<span class="has-text-danger">*</span>
-						}
-					</label>
-					<!-- Field label -->
-					<div class="control">
-						<!-- Wrapper for input or textarea -->
-						@if(field.type === 'select') {
-						<div class="select">
-							<select [id]="field.name" [formControlName]="field.name">
-								@for(option of field.options; track $index) {
-								<option [value]="option">{{ option }}</option>
-								}
-							</select>
-						</div>
-						} @else if(field.type !== 'textarea') {
-						<input class="input" [type]="field.type" [id]="field.name" [formControlName]="field.name"
-							[placeholder]="field.placeholder" />
-						} @else {
-						<textarea class="textarea" [id]="field.name" [formControlName]="field.name"
-							[placeholder]="field.placeholder"></textarea>
-						}
-					</div>
-					@if (form.get(field.name)?.invalid &&
-					form.get(field.name)?.touched) {
-					<p class="help is-danger">
-						@if(form.get(field.name)?.hasError('required')) {
-						{{ field.label }} is required.
-						} @else if(form.get(field.name)?.hasError('pattern')) {
-						Please enter a valid {{ field.label }}.
-						} @else if(form.get(field.name)?.hasError('minLength')) {
-						Minimum length is {{ field.minLength }}.
-						} @else if(form.get(field.name)?.hasError('maxLength')) {
-						Maximum length is {{ field.maxLength }}.
-						}
-					</p>
-					}
-				</div>
-				}
-				<div class="buttons">
-					<!-- Bulma's buttons container -->
-					<button type="submit" class="button is-primary" [disabled]="form.invalid">
-						Submit
-					</button>
-					<button type="button" class="button is-danger" (click)="close()">
-						Cancel
-					</button>
-				</div>
-			</form>
-		</section>
-	</div>
+<div class="dynamic-form">
+  <h3 *ngIf="!item">Create {{ itemType }}</h3>
+  <h3 *ngIf="item">Edit {{ itemType }}</h3>
+  
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input id="name" formControlName="name" type="text" required>
+      <div *ngIf="form.get('name')?.invalid && form.get('name')?.touched" class="error">
+        Name is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="manufacturer">Manufacturer</label>
+      <input id="manufacturer" formControlName="manufacturer" type="text">
+    </div>
+
+    <div class="form-group">
+      <label for="dateAcquired">Date Acquired</label>
+      <input id="dateAcquired" formControlName="dateAcquired" type="date">
+    </div>
+
+    <div class="form-group">
+      <label for="price">Price</label>
+      <input id="price" formControlName="price" type="number" step="0.01">
+    </div>
+
+    <div class="form-group">
+      <label for="condition">Condition</label>
+      <select id="condition" formControlName="condition">
+        <option *ngFor="let condition of conditions" [value]="condition">{{ condition }}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="status">Status</label>
+      <select id="status" formControlName="status">
+        <option *ngFor="let status of statuses" [value]="status">{{ status }}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="notes">Notes</label>
+      <textarea id="notes" formControlName="notes" rows="3"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="warrantyInfo">Warranty Info</label>
+      <textarea id="warrantyInfo" formControlName="warrantyInfo" rows="3"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="trackingCode">Tracking Code</label>
+      <input id="trackingCode" formControlName="trackingCode" type="text" readonly>
+    </div>
+
+    <div *ngIf="isWeapon" class="weapon-specific">
+      <h4>Weapon Specific Fields</h4>
+      
+      <div class="form-group">
+        <label for="platform">Platform</label>
+        <select id="platform" formControlName="platform">
+          <option *ngFor="let platform of platforms" [value]="platform">{{ platform }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="category">Category</label>
+        <input id="category" formControlName="category" type="text" required>
+        <div *ngIf="form.get('category')?.invalid && form.get('category')?.touched" class="error">
+          Category is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="subcategory">Subcategory</label>
+        <input id="subcategory" formControlName="subcategory" type="text">
+      </div>
+
+      <div class="form-group">
+        <label for="model">Model</label>
+        <input id="model" formControlName="model" type="text" required>
+        <div *ngIf="form.get('model')?.invalid && form.get('model')?.touched" class="error">
+          Model is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="serialNumber">Serial Number</label>
+        <input id="serialNumber" formControlName="serialNumber" type="text">
+      </div>
+
+      <div class="form-group">
+        <label for="caliberOrBbSize">Caliber/BB Size</label>
+        <input id="caliberOrBbSize" formControlName="caliberOrBbSize" type="text">
+      </div>
+
+      <div class="form-group">
+        <label for="actionType">Action Type</label>
+        <input id="actionType" formControlName="actionType" type="text">
+      </div>
+
+      <div class="form-group">
+        <label for="countryOfOrigin">Country of Origin</label>
+        <input id="countryOfOrigin" formControlName="countryOfOrigin" type="text">
+      </div>
+    </div>
+
+    <div *ngIf="isPart" class="part-specific">
+      <h4>Part Specific Fields</h4>
+      
+      <div class="form-group">
+        <label for="platform">Platform</label>
+        <select id="platform" formControlName="platform">
+          <option *ngFor="let platform of platforms" [value]="platform">{{ platform }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="partType">Part Type</label>
+        <input id="partType" formControlName="partType" type="text" required>
+        <div *ngIf="form.get('partType')?.invalid && form.get('partType')?.touched" class="error">
+          Part Type is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="compatibleModelsRaw">Compatible Models</label>
+        <textarea id="compatibleModelsRaw" formControlName="compatibleModelsRaw" rows="3"></textarea>
+      </div>
+    </div>
+
+    <div *ngIf="isAccessory" class="accessory-specific">
+      <h4>Accessory Specific Fields</h4>
+      
+      <div class="form-group">
+        <label for="platform">Platform</label>
+        <select id="platform" formControlName="platform">
+          <option *ngFor="let platform of platforms" [value]="platform">{{ platform }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="accessoryType">Accessory Type</label>
+        <input id="accessoryType" formControlName="accessoryType" type="text" required>
+        <div *ngIf="form.get('accessoryType')?.invalid && form.get('accessoryType')?.touched" class="error">
+          Accessory Type is required
+        </div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" (click)="onCancel()" class="btn-cancel">Cancel</button>
+      <button type="submit" [disabled]="form.invalid" class="btn-submit">
+        {{ item ? 'Update' : 'Create' }}
+      </button>
+    </div>
+  </form>
 </div>

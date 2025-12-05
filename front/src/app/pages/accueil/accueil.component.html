@@ -1,6 +1,69 @@
-<div class="container">
-  <h1>Page d'Accueil</h1>
-  @if(!loading) {
-	<app-table [data]="weaponList" type="Weapon"></app-table>
-  }
+<div class="accueil-container">
+  <div class="welcome-section">
+    <h1>Welcome to WASP</h1>
+    <p>Weapons and Accessories Support Platform</p>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card" (click)="navigateToItems()">
+      <div class="stat-icon">📦</div>
+      <div class="stat-content">
+        <h3>Total Items</h3>
+        <p class="stat-number">{{ totalItems }}</p>
+      </div>
+    </div>
+
+    <div class="stat-card" (click)="navigateToWeapons()">
+      <div class="stat-icon">🔫</div>
+      <div class="stat-content">
+        <h3>Weapons</h3>
+        <p class="stat-number">{{ totalWeapons }}</p>
+      </div>
+    </div>
+
+    <div class="stat-card" (click)="navigateToParts()">
+      <div class="stat-icon">🔧</div>
+      <div class="stat-content">
+        <h3>Parts</h3>
+        <p class="stat-number">{{ totalParts }}</p>
+      </div>
+    </div>
+
+    <div class="stat-card" (click)="navigateToAccessories()">
+      <div class="stat-icon">🎯</div>
+      <div class="stat-content">
+        <h3>Accessories</h3>
+        <p class="stat-number">{{ totalAccessories }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="recent-items">
+    <h2>Recent Items</h2>
+    <div *ngIf="recentItems.length === 0" class="no-data">
+      No recent items found.
+    </div>
+    <div *ngIf="recentItems.length > 0" class="items-list">
+      <div class="item-card" *ngFor="let item of recentItems">
+        <div class="item-header">
+          <h4>{{ item.name }}</h4>
+          <span class="item-type">{{ item.itemType }}</span>
+        </div>
+        <div class="item-details">
+          <p><strong>Manufacturer:</strong> {{ item.manufacturer || 'N/A' }}</p>
+          <p><strong>Status:</strong> {{ item.status }}</p>
+          <p><strong>Tracking Code:</strong> {{ item.trackingCode }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="quick-actions">
+    <h2>Quick Actions</h2>
+    <div class="action-buttons">
+      <button class="btn-primary" (click)="navigateToItems()">Manage Items</button>
+      <button class="btn-secondary" (click)="navigateToMaintenance()">Maintenance</button>
+      <button class="btn-secondary" (click)="navigateToTags()">Manage Tags</button>
+    </div>
+  </div>
 </div>
